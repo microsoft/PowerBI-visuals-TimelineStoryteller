@@ -1,0 +1,4 @@
+Removed socket-io
+Replaced images with data:... references
+
+Main problem in PBI is that you just get an element, you cannot expect to be loaded into your own window or have access to services.

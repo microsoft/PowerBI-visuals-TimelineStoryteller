@@ -1,0 +1,47 @@
+{
+  "dataRoles": [
+    {
+      "name": "facet",
+      "kind": 0,
+      "displayName": "Facet"
+    }, {
+      "name": "content_text",
+      "kind": 0,
+      "displayName": "Content Text"
+    }, {
+      "name": "start_date",
+      "kind": 0,
+      "displayName": "Start Date"
+    }, {
+      "name": "end_date",
+      "kind": 0,
+      "displayName": "End Date"
+    }, {
+      "name": "category",
+      "kind": 0,
+      "displayName": "Category"
+    }
+  ],
+  "dataViewMappings": [{
+    "conditions": [
+      {
+        "facet": {"max": 1},
+        "content_text": {"max": 1},
+        "start_date": {"max": 1},
+        "end_date": {"max": 1},
+        "category": {"max": 1}
+      }
+    ],
+    "table": {
+      "rows": {
+        "select": [
+          { "for": { "in": "facet" }},
+          { "for": { "in": "content_text" }},
+          { "for": { "in": "start_date" }},
+          { "for": { "in": "end_date" }},
+          { "for": { "in": "category" }}
+        ]
+      }
+    }
+  }]
+}

@@ -1,0 +1,715 @@
+@charset "UTF-8";
+
+@media (max-width:1272px) {
+  #header-wrapper{
+    position: absolute;
+  }
+
+  #left-column {
+    position: absolute;
+  }
+
+  #footer {
+    position: relative;
+  }
+}
+
+@media (min-width:1273px) {
+  #header-wrapper{
+    position: fixed;
+  }
+
+  #left-column {
+    position: fixed;
+  }
+
+  #footer {
+    position: fixed;
+  }
+}
+
+video {
+  border: 1px solid #ccc;
+}
+
+.dimension_icon_rep {
+  position: relative;
+  background-color: #FFF;
+  border: 1.5px solid #2EAAE1;
+}
+
+.dimension_icon_scale {
+  position: relative;
+  background-color: #FFF;
+  border: 1.5px solid #E84E1B;
+
+}
+
+.dimension_icon_layout {
+  position: relative;
+  background-color: #FFF;
+  border: 1.5px solid #94C11E;
+}
+
+
+body {
+	font-family: "Segoe UI Web Regular","wf_segoe-ui_normal","Segoe UI","Segoe UI Symbol","Myriad","Calibri","UnDotum","Optima","Tahoma","Century Gothic","Helvetica Neue","BBAlpha Sans","S60 Sans","Arial",sans-serif;
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+  top: 0px;
+  color: #333333;
+  background: #fff;
+  text-align: left;
+  min-height: 100%;
+  position: relative;
+}
+
+h1 {
+font-variant: small-caps;
+font-size: 24px;
+font-weight: bold;
+margin: 0px 0px 0px 0;
+color: #333333;
+}
+
+h2 {
+font-variant: small-caps;
+
+font-size: 16px;
+font-weight: bold;
+color: #333333;
+margin: 0px 0 10px 0;
+}
+
+#nav a {
+font-variant: small-caps;
+
+font-size: 16px;
+text-align: right;
+padding: 0 0 0 15px;
+}
+
+a {
+  text-decoration: none;
+  color: #626262;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+#page-title{
+
+font-size: 36px;
+width: 450px;
+height: 37px;
+clear:both;
+}
+
+#tagline{
+
+font-size: 14px;
+width: 450px;
+height: 20px;
+}
+
+
+p {
+margin: 0px 0px 6px 0px;
+}
+
+li {
+  margin: 0px 0px 10px 0px;
+}
+
+.left {
+float: left;
+}
+
+.right {
+text-align: right;
+float: right;
+}
+
+.block{
+margin: 25px 0px;
+margin-bottom: 30px;
+}
+
+#content-wrapper{
+max-width: 720px;
+min-width: 720px;
+width: 720px;
+margin: 0 auto 0px;
+top: 0px;
+padding-bottom: 25px;
+}
+
+
+#content{
+max-width: 720px;
+min-width: 720px;
+width: 720px;
+margin: 0px 0px 0px 0px;
+padding-top:125px;
+}
+
+code {
+  background-color: #F2F2F2;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  padding: 0;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  border-radius: 3px;
+}
+
+.tab {
+  text-indent: 1em;
+}
+
+#header-wrapper{
+width: 100%;
+padding-top: 25px;
+left: 0px;
+padding:0;
+margin:0;
+background: #FFFFFF;
+margin: 0px 0px 0px 0px;
+z-index: 1;
+}
+
+#header{
+max-width: 715px;
+min-width: 715px;
+width: 715px;
+min-height: 75px;
+margin:0 auto 0px;
+padding-top: 25px;
+background: #FFFFFF;
+border-bottom: 1px solid #999;
+}
+
+#logo{
+width: 200px;
+height: 50px;
+float: left;
+}
+
+#nav{
+width: 400px;
+height: 20px;
+float: right;
+text-align: right;
+padding: 40px 0px 0px 0px;
+}
+
+#title {
+float:left;
+width: 430px;
+font-size: 32px;
+margin: 15px 0px 15px 0px;
+letter-spacing: 0.5px;
+padding: 0 0 0 0px;
+}
+
+.anchor {
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    z-index: -1;
+    visibility: hidden;
+    margin-top: -85px;
+}
+
+#left-column {
+width: 100px;
+float: left;
+border: 1px solid #999;
+background: #F2F2F2;
+font-size: 12px;
+border-radius:10px 0px 0px 10px;
+padding: 10px 10px 10px 10px;
+}
+
+#people-images {
+float: right;
+text-align:right;
+}
+
+#left-column .people-thumb {
+float:right;
+margin: 0px 0px 10px 0px;
+width: 100px;
+}
+
+.gif_container {
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+  box-shadow: 1px 1px 3px 0px grey;
+  border: 1px solid black;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.gif_container:hover {
+  box-shadow: 1px 1px 3px 0px black;
+  border: 1px solid #2A5DB0;
+}
+
+.gallery_index {
+  background-color: #F5D328;
+  border: 1.5px solid black;
+  border-radius: 10px;
+  color: black;
+  font: bold 10px "Century Gothic", Helvetica, Verdana, Tahoma;
+  height: 30px;
+  max-width: 30px;
+  padding: 5px 5px 5px 5px;
+  text-align: center;
+  position: relative;
+  bottom: 7.5px;
+}
+
+.gallery_index_invisible {
+  opacity: 0;
+}
+
+.transition_gif {
+	-webkit-clip-path: inset(1% 1% 1% 1%);
+}
+
+#right-column {
+float: right;
+width: 560px;
+margin-bottom: 50px;
+padding: 0px 0px 0px 15px;
+}
+
+.bio{
+width: 549px;
+margin: 0px 0px 0px 0px;
+padding: 10px 0px 10px 0px;
+float: left;
+}
+
+.bio .text{
+float: left;
+width: 549px;
+}
+
+.news{
+width: 565px;
+margin: 0px 0px 0px -10px;
+padding: 0px 0px 0px 10px;
+float: left;
+background: #eeffff;
+border-radius:10px 10px 10px 10px;
+}
+
+.section{
+width: 555px;
+margin: 0px 0px 10px 0px;
+padding: 0px 0px 1px 0px;
+float: left;
+}
+
+.section-one-column{
+width: 720px;
+float: left;
+margin: 10px 0px 10px 0px;
+}
+
+.section .text{
+float: left;
+width: 560px;
+}
+
+.section .thumb{
+float: right;
+width: 140px;
+}
+
+.section-one-column .text{
+float: left;
+width: 470px;
+margin: 15px;
+}
+
+.section-one-column .thumb{
+float: left;
+width: 200px;
+margin: 10px;
+}
+
+.section-one-column .venue .name{
+font-style: italic;
+}
+
+.emph{
+font-weight: bold;
+}
+
+.title{
+font-weight: bold;
+}
+
+#sectionlications .award{
+font-style: italic;
+color: #669933;
+}
+
+#projects {
+float:left;
+width: 470px;
+margin-left:0px;
+}
+
+#footer {
+  bottom: 0px;
+  left: 0px;
+  z-index: 1;
+  background: #F2F2F2;
+  border: 1px solid #999;
+  text-align: right;
+  vertical-align: middle;
+  width: 100%;
+  height: 25px;
+  width: 100%;
+  clear: both;
+}
+
+#footer_left {
+  bottom: 0px;
+  left: 0px;
+  z-index: 1;
+  text-align: left;
+  vertical-align: middle;
+  margin-right: 0px;
+  height: 25px;
+  float: left;
+}
+
+#footer_right {
+  bottom: 0px;
+  right: 0px;
+  z-index: 1;
+  text-align: right;
+  vertical-align: middle;
+  margin-left: 0px;
+  height: 25px;
+  float: right;
+}
+
+.footer_text_left {
+  text-align: left;
+  margin-left: 24px;
+  font-size: .8em;
+  color: #626262;
+  bottom: 0px;
+  text-decoration: none;
+}
+
+.footer_text {
+  text-align: right;
+  margin-right: 24px;
+  font-size: .8em;
+  color: #626262;
+  bottom: 0px;
+  text-decoration: none;
+}
+
+
+#projects .summary{
+padding: 0;
+margin: 5px 25px 15px 25px;
+}
+
+#project-one-column{
+  background: #fff;
+  max-width: 700px;
+  min-width: 600px;
+  height: 100%;
+  margin: 0 auto 0 20px;
+  padding: 5px 20px 15px 20px;
+
+  font-size: 12px;
+  line-height: 16px;
+  text-align: justify;
+}
+
+img {
+  -webkit-border-radius:5px;
+  -moz-border-radius:5px;
+  border-radius:5px;
+  box-shadow: 1px 1px 3px 0px grey;
+}
+
+.ms-logo {
+  height: 23px;
+  max-height: 23px;
+  display: block;
+  vertical-align: baseline;
+  -webkit-border-radius:0px;
+  -moz-border-radius:0px;
+  border-radius:0px;
+  box-shadow: none;
+}
+
+#project-one-column .authors {
+font-size: 17px;
+}
+
+#project-one-column .figure {
+margin: 25px 0px;
+margin-bottom: 30px;
+}
+#project-one-column .figure .image {
+margin-bottom: 6px;
+}
+#project-one-column .project-one-column .figure img {
+max-width: 625px; max-height: 400px;
+}
+#project-one-column .figure .imglink img {
+margin-bottom: 6px; border: 1px solid white;
+}
+#project-one-column .figure .imglink img:hover {
+border: 1px solid #0000FF;
+}
+#project-one-column .figure .caption {
+font-size: 11px;
+}
+
+.citation {
+margin-bottom: 20px; float: left;
+}
+.citation .thumb {
+float: left;
+padding-right: 12px;
+margin-top: 3px;
+}
+.citation .thumb img {
+border: 1px solid #fff;
+}
+.citation .section {
+border-bottom: none;
+}
+.citation .section .title {
+font-weight: bold;
+}
+.citation .section .authors {
+font-size: 12px !important;
+}
+.citation .section .venue {
+display: inline;
+}
+.citation .section .venue .name {
+font-style: italic;
+}
+.citation .section .note {
+font-weight: bold;
+}
+
+.block{
+margin: 25px 0px;
+margin-bottom: 30px;
+}
+
+#draw_timeline {
+  width: 560px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  height: 50px;
+  border-radius: 25px;
+  background-color: #ff7f0e;
+  border-color: #da6600;
+  background: #ff7f0e;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #da6600;
+  background-image: -webkit-linear-gradient(top, #ff7f0e, #da6600);
+  background-image: -moz-linear-gradient(top, #ff7f0e, #da6600);
+  background-image: -ms-linear-gradient(top, #ff7f0e, #da6600);
+  background-image: -o-linear-gradient(top, #ff7f0e, #da6600);
+  background-image: linear-gradient(to bottom, #ff7f0e, #da6600);
+}
+
+#draw_timeline:hover {
+  background-color: #da6600;
+  border-color: #ff7f0e;
+  background: #da6600;
+  border: 1px solid #000;
+  background-image: -webkit-linear-gradient(top, #da6600, #ff7f0e);
+  background-image: -moz-linear-gradient(top, #da6600, #ff7f0e);
+  background-image: -ms-linear-gradient(top, #da6600, #ff7f0e);
+  background-image: -o-linear-gradient(top, #da6600, #ff7f0e);
+  background-image: linear-gradient(to bottom, #da6600, #ff7f0e);
+}
+
+.boilerplate_title {
+  text-align: center;
+  font-weight: 600;
+  font-stretch: ultra-expanded;
+  font-size: 16px;
+  color: #000;
+  bottom: 0px;
+  width: 100px;
+  text-decoration: none;
+}
+
+#launch_btn {
+  text-decoration: none;
+}
+
+.carousel_element {
+  width: 540px;
+  height: 540px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #eee;
+  padding: 10px;
+  user-select: none;
+}
+
+.carousel_element_img {
+  max-width: 540px;
+  max-height: 540px;
+  cursor: pointer;
+}
+
+.carousel_element_img:hover {
+  border: 1px solid #333;
+}
+
+.carousel_control_div {
+  background-color: #eee;
+  text-align: center!important;
+  font-size: 24px!important;
+  box-sizing: inherit;
+  display: block;
+  user-select: none;
+  line-height: 1.5;
+  width: 540px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.carousel_control {
+  font-size: 24px;
+  font-weight: bold;
+  color: #888;
+  cursor: pointer;
+}
+
+.carousel_control:hover {
+  color: #333;
+}
+
+.carousel_left {
+  float: left;
+}
+
+.carousel_right {
+  float: right;
+}
+
+.carousel_indicator {
+  height: 13px;
+  background-color: #888;
+  width: 13px;
+  border-radius: 50%;
+  padding: 0;
+  border: 1px solid #888!important;
+  display: inline-block;
+  text-align: center;
+}
+
+.carousel_indicator:hover {
+  background-color: #333;
+  transition: background-color .25s,color .15s,box-shadow .15s,opacity .25s,filter .25s,border .15s;
+}
+
+#carousel_selected {
+  background-color: #333;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (Image) */
+.modal_content {
+    margin: auto;
+    display: block;
+    max-height: 800px;
+}
+
+/* Caption of Modal Image (Image Text) - Same Width as the Image */
+#modal_caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
+}
+
+/* Add Animation - Zoom in the Modal */
+.modal_content, #modal_caption {
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.6s;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+    from {-webkit-transform:scale(0)}
+    to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+    from {transform:scale(0)}
+    to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+    .modal_content {
+        width: 100%;
+    }
+}

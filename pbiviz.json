@@ -1,0 +1,24 @@
+{
+  "visual": {
+    "name": "TimelineStoryteller",
+    "displayName": "Timeline Storyteller",
+    "guid": "TimelineStoryteller1652434605730",
+    "visualClassName": "TimelineStoryteller",
+    "description": "This visual is currently in beta testing and is undergoing active development. Timeline Storyteller.",
+    "supportUrl": "http://community.powerbi.com",
+    "gitHubUrl": ""
+  },
+  "author": {
+    "name": "Microsoft (experimental)",
+    "email": "msrvizsupport@microsoft.com"
+  },
+  "apiVersion": "1.6.0",
+  "assets": {
+    "icon": "assets/icon.svg",
+    "thumbnail": "assets/thumbnail.png",
+    "screenshot": "assets/screenshot.png"
+  },
+  "style": "style/visual.scss",
+  "capabilities": "capabilities.json",
+  "output": "dist/essex.widget.timelinestoryteller.pbiviz"
+}
