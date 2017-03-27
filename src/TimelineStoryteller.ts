@@ -25,12 +25,16 @@ import IVisual = powerbi.extensibility.IVisual;
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 
+const TimelineStorytellerImpl = require("timeline_storyteller");
+
 /**
  * Timeline story teller PowerBI visual class.
  *
  * @class TimelineStoryteller
  */
 export default class TimelineStoryteller implements IVisual {
+
+    private teller: any;
 
     /**
      * TimelineStoryteller class constructor.
@@ -39,6 +43,7 @@ export default class TimelineStoryteller implements IVisual {
      * @param {VisualConstructorOptions} options - The initialization options as provided by PowerBI.
      */
     constructor(options: VisualConstructorOptions) {
+        this.teller = new TimelineStorytellerImpl(true);
 
         //   unique_values.set((d.content_text + d.start_date + d.end_date + d.category + d.facet), d);
     }
@@ -75,7 +80,6 @@ export default class TimelineStoryteller implements IVisual {
             });
 
             if (Object.keys(colIdx).length === cols.length) {
-                const teller = require("timelinestoryteller-component");
                 const data = dv.table.rows.map(n => {
                     const item = {};
                     cols.forEach(c => {
@@ -83,8 +87,7 @@ export default class TimelineStoryteller implements IVisual {
                     });
                     return item;
                 });
-                debugger;
-                teller.load(data);
+                this.teller.load(data);
             }
         }
     }

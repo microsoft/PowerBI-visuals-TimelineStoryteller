@@ -7,7 +7,10 @@ module.exports = {
     entry: ENTRY,
     devtool: 'eval',
     resolve: {
-        extensions: ['', '.webpack.js', '.web.js', '.js', '.ts', '.css', '.png', '.svg', '.gif']
+        extensions: ['', '.webpack.js', '.web.js', '.js', '.ts', '.css']
+    },
+    resolve: {
+       modulesDirectories: [path.join(__dirname, 'node_modules')]
     },
     module: {
         loaders: [
@@ -22,21 +25,9 @@ module.exports = {
             {
                 test: /\.ts?$/,
                 loader: 'ts-loader',
-            },
-            {
-                test: /timelinestoryteller-component\/.*\/app\/.*\.js$/,
-                loader: 'script-loader'
-            },
-            {
-                test:  require.resolve("intro.js"),
-                loader: 'script-loader'
-            },
-            {
-                test: /\.(png|gif|svg)?$/,
-                loader: 'url-loader',
-                options: {
-                    limit: 10000000
-                }
+            }, {
+                test: /\.(png|svg)$/,
+                loader: "binary-loader"
             }
         ]
     },
@@ -45,5 +36,8 @@ module.exports = {
             jquery: "jQuery",
             "lodash": "_"
         },
+    ],
+    plugins: [
+        new webpack.IgnorePlugin(/socket.io/)
     ]
 };
