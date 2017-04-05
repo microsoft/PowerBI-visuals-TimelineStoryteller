@@ -1,6 +1,5 @@
 /**
- * Copyright (c) 2016 Uncharted Software Inc.
- * http://www.uncharted.software/
+ * Copyright (c) 2017 Microsoft
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -21,11 +20,19 @@
  * SOFTWARE.
  */
 
+require('intro.js/introjs.css'); // Loads the intro.js css
+
 import IVisual = powerbi.extensibility.IVisual;
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 
-const TimelineStorytellerImpl = require("timeline_storyteller");
+const TimelineStorytellerImpl = require('timeline_storyteller');
+const DEFAULT_OPTIONS = {
+    showAbout: false,
+    showLogo: false,
+    showImportOptions: false,
+    showIntro: false,
+};
 
 /**
  * Timeline story teller PowerBI visual class.
@@ -43,9 +50,8 @@ export default class TimelineStoryteller implements IVisual {
      * @param {VisualConstructorOptions} options - The initialization options as provided by PowerBI.
      */
     constructor(options: VisualConstructorOptions) {
-        this.teller = new TimelineStorytellerImpl(true);
-
-        //   unique_values.set((d.content_text + d.start_date + d.end_date + d.category + d.facet), d);
+        this.teller = new TimelineStorytellerImpl(true, false, options.element);
+        this.teller.setOptions(DEFAULT_OPTIONS);
     }
 
     /**
@@ -66,11 +72,11 @@ export default class TimelineStoryteller implements IVisual {
         const dv = options.dataViews && options.dataViews[0];
         if (dv) {
             const cols = [
-                "facet",
-                "content_text",
-                "start_date",
-                "end_date",
-                "category"
+                'facet',
+                'content_text',
+                'start_date',
+                'end_date',
+                'category'
             ];
             const colIdx = {};
             dv.table.columns.forEach((n, idx) => {
@@ -79,16 +85,14 @@ export default class TimelineStoryteller implements IVisual {
                 });
             });
 
-            if (Object.keys(colIdx).length === cols.length) {
-                const data = dv.table.rows.map(n => {
-                    const item = {};
-                    cols.forEach(c => {
-                        item[c] = n[colIdx[c]];
-                    });
-                    return item;
+            const data = dv.table.rows.map(n => {
+                const item = {};
+                cols.forEach(c => {
+                    item[c] = n[colIdx[c]];
                 });
-                this.teller.load(data);
-            }
+                return item;
+            });
+            this.teller.load(data);
         }
     }
 }

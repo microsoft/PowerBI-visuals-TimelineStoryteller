@@ -262,7 +262,7 @@ binary-extensions@^1.0.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.8.0.tgz#48ec8d16df4377eae5fa5884682480af4d95c774"
 
-binary-loader@^0.0.1:
+binary-loader@0.0.1, binary-loader@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/binary-loader/-/binary-loader-0.0.1.tgz#0c1f8e5afee48b28bda219567002b470e5996cec"
 
@@ -1054,6 +1054,13 @@ expand-range@^1.8.1:
   resolved "https://registry.yarnpkg.com/expand-range/-/expand-range-1.8.2.tgz#a299effd335fe2721ebae8e257ec79644fc85337"
   dependencies:
     fill-range "^2.1.0"
+
+exports-loader@^0.6.4:
+  version "0.6.4"
+  resolved "http://essex-private-npm.westus.cloudapp.azure.com:4873/exports-loader/-/exports-loader-0.6.4.tgz#d70fc6121975b35fc12830cf52754be2740fc886"
+  dependencies:
+    loader-utils "^1.0.2"
+    source-map "0.5.x"
 
 expose-loader@^0.7.3:
   version "0.7.3"
@@ -3432,6 +3439,12 @@ style-loader@^0.15.0:
   dependencies:
     loader-utils "^1.0.2"
 
+style-loader@^0.16.0:
+  version "0.16.1"
+  resolved "http://essex-private-npm.westus.cloudapp.azure.com:4873/style-loader/-/style-loader-0.16.1.tgz#50e325258d4e78421dd9680636b41e8661595d10"
+  dependencies:
+    loader-utils "^1.0.2"
+
 supports-color@3.1.2, supports-color@^3.1.0:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-3.1.2.tgz#72a262894d9d408b956ca05ff37b2ed8a6e2a2d5"
@@ -3502,6 +3515,17 @@ throttleit@^1.0.0:
 through@2, through@~2.3, through@~2.3.1:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
+
+timeline_storyteller@^0.1.0:
+  version "0.1.0"
+  resolved "http://essex-private-npm.westus.cloudapp.azure.com:4873/timeline_storyteller/-/timeline_storyteller-0.1.0.tgz#708061dd944ca4dcf350fd3fa759949c3b424827"
+  dependencies:
+    binary-loader "0.0.1"
+    css-loader "^0.27.3"
+    exports-loader "^0.6.4"
+    raw-loader "^0.5.1"
+    style-loader "^0.16.0"
+    worker-loader "^0.8.0"
 
 timers-browserify@^2.0.2:
   version "2.0.2"
@@ -3802,6 +3826,12 @@ wordwrap@0.0.2:
 wordwrap@~0.0.2:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.3.tgz#a3d5da6cd5c0bc0008d37234bbaf1bed63059107"
+
+worker-loader@^0.8.0:
+  version "0.8.0"
+  resolved "http://essex-private-npm.westus.cloudapp.azure.com:4873/worker-loader/-/worker-loader-0.8.0.tgz#13582960dcd7d700dc829d3fd252a7561696167e"
+  dependencies:
+    loader-utils "^1.0.2"
 
 wrap-ansi@^2.0.0:
   version "2.1.0"
