@@ -1,10 +1,12 @@
 # Timeline Storyteller -- PowerBI
 
-## Building
-
-* Run `npm run package` to package the visual.
-* `.pbiviz` file will be generated in the `dist` folder
+## Getting Started
+* Install [yarn](https://yarnpkg.com)
+* Install [node 6+](https://nodejs.org/en/)
+* Run `yarn` to install the dependencies
+* Run `yarn package` to package the visual.
+    * The `.pbiviz` file will be generated in the `dist` folder
 
 ## Testing
 
-* Run `npm test`
+* Run `yarn test`
