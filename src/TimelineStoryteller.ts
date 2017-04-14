@@ -70,29 +70,31 @@ export default class TimelineStoryteller implements IVisual {
      */
     public update(options: VisualUpdateOptions): void {
         const dv = options.dataViews && options.dataViews[0];
-        if (dv) {
-            const cols = [
-                'facet',
-                'content_text',
-                'start_date',
-                'end_date',
-                'category'
-            ];
-            const colIdx = {};
-            dv.table.columns.forEach((n, idx) => {
-                Object.keys(n.roles).forEach(m => {
-                    colIdx[m] = idx;
+        if ((options.type & powerbi.VisualUpdateType.Data) === powerbi.VisualUpdateType.Data) {
+            if (dv) {
+                const cols = [
+                    'facet',
+                    'content_text',
+                    'start_date',
+                    'end_date',
+                    'category'
+                ];
+                const colIdx = {};
+                dv.table.columns.forEach((n, idx) => {
+                    Object.keys(n.roles).forEach(m => {
+                        colIdx[m] = idx;
+                    });
                 });
-            });
 
-            const data = dv.table.rows.map(n => {
-                const item = {};
-                cols.forEach(c => {
-                    item[c] = n[colIdx[c]];
+                const data = dv.table.rows.map(n => {
+                    const item = {};
+                    cols.forEach(c => {
+                        item[c] = n[colIdx[c]];
+                    });
+                    return item;
                 });
-                return item;
-            });
-            this.teller.load(data);
+                this.teller.load(data);
+            }
         }
     }
 }
