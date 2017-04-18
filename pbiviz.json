@@ -20,5 +20,5 @@
   },
   "style": "style/visual.scss",
   "capabilities": "capabilities.json",
-  "output": "dist/essex.widget.timelinestoryteller.pbiviz"
+  "output": "dist/timelinestoryteller-powerbi.pbiviz"
 }
