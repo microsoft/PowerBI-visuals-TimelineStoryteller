@@ -30,7 +30,7 @@ const TimelineStorytellerImpl = require('timeline_storyteller');
 const DEFAULT_OPTIONS = {
     showAbout: false,
     showLogo: false,
-    showImportOptions: false,
+    showImportOptions: true,
     showIntro: false,
 };
 
@@ -42,6 +42,7 @@ const DEFAULT_OPTIONS = {
 export default class TimelineStoryteller implements IVisual {
 
     private teller: any;
+    private columnMappings: { [bucket: string]: any };
 
     /**
      * TimelineStoryteller class constructor.
@@ -51,6 +52,7 @@ export default class TimelineStoryteller implements IVisual {
      */
     constructor(options: VisualConstructorOptions) {
         this.teller = new TimelineStorytellerImpl(true, false, options.element);
+        this.teller.setUIScale(.7);
         this.teller.setOptions(DEFAULT_OPTIONS);
     }
 
@@ -71,29 +73,50 @@ export default class TimelineStoryteller implements IVisual {
     public update(options: VisualUpdateOptions): void {
         const dv = options.dataViews && options.dataViews[0];
         if ((options.type & powerbi.VisualUpdateType.Data) === powerbi.VisualUpdateType.Data) {
+            const cols = [
+                'facet',
+                'content_text',
+                'start_date',
+                'end_date',
+                'category'
+            ];
+
             if (dv) {
-                const cols = [
-                    'facet',
-                    'content_text',
-                    'start_date',
-                    'end_date',
-                    'category'
-                ];
-                const colIdx = {};
-                dv.table.columns.forEach((n, idx) => {
-                    Object.keys(n.roles).forEach(m => {
-                        colIdx[m] = idx;
+
+                const newMappings: any = {};
+                dv.table.columns.forEach((column, index) => {
+                    Object.keys(column.roles).sort().forEach(role => {
+                        newMappings[role] = {
+                            index,
+                            parent: column.queryName + ':' + column.groupName
+                        };
                     });
                 });
+
+                // We need both dates for it to work properly
+                if (!newMappings.start_date || !newMappings.end_date) {
+                    delete newMappings.start_date;
+                    delete newMappings.end_date;
+                }
 
                 const data = dv.table.rows.map(n => {
                     const item = {};
                     cols.forEach(c => {
-                        item[c] = n[colIdx[c]];
+                        item[c] = n[(newMappings[c] || {}).index];
+                        if (item[c] && (c === 'start_date' || c === 'end_date')) {
+                            item[c] = new Date(item[c]);
+                        }
                     });
                     return item;
                 });
-                this.teller.load(data);
+
+                // We are initially loading
+                if (!this.columnMappings || cols.filter(n => (newMappings[n] || {}).parent === (this.columnMappings[n] || {}).parent).length !== cols.length) {
+                    this.columnMappings = newMappings;
+                    this.teller.load(data);
+                } else {
+                    this.teller.update(data);
+                }
             }
         }
     }
