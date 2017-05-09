@@ -30,8 +30,9 @@ const TimelineStorytellerImpl = require('timeline_storyteller');
 const DEFAULT_OPTIONS = {
     showAbout: false,
     showLogo: false,
-    showImportOptions: true,
-    showIntro: false,
+    // showImportOptions: true,
+    showImportLoadDataOptions: false,
+    showIntro: false
 };
 
 /**
