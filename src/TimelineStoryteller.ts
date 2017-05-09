@@ -44,6 +44,7 @@ export default class TimelineStoryteller implements IVisual {
 
     private teller: any;
     private columnMappings: { [bucket: string]: any };
+    private element: HTMLElement;
 
     /**
      * TimelineStoryteller class constructor.
@@ -52,6 +53,8 @@ export default class TimelineStoryteller implements IVisual {
      * @param {VisualConstructorOptions} options - The initialization options as provided by PowerBI.
      */
     constructor(options: VisualConstructorOptions) {
+        this.element = options.element;
+        this.element.className += ' timelinestoryteller-powerbi';
         this.teller = new TimelineStorytellerImpl(true, false, options.element);
         this.teller.setUIScale(.7);
         this.teller.setOptions(DEFAULT_OPTIONS);
@@ -83,7 +86,6 @@ export default class TimelineStoryteller implements IVisual {
             ];
 
             if (dv) {
-
                 const newMappings: any = {};
                 dv.table.columns.forEach((column, index) => {
                     Object.keys(column.roles).sort().forEach(role => {
@@ -94,29 +96,41 @@ export default class TimelineStoryteller implements IVisual {
                     });
                 });
 
-                // We need both dates for it to work properly
-                if (!newMappings.start_date || !newMappings.end_date) {
-                    delete newMappings.start_date;
-                    delete newMappings.end_date;
+                // Make sure we have all of the oclumns, for now.
+                let display = 'none';
+                if (Object.keys(newMappings).length === cols.length) {
+                    display = null;
+
+                    // We need both dates for it to work properly
+                    if (!newMappings.start_date || !newMappings.end_date) {
+                        delete newMappings.start_date;
+                        delete newMappings.end_date;
+                    }
+
+                    const data = dv.table.rows.map(n => {
+                        const item = {};
+                        cols.forEach(c => {
+                            item[c] = n[(newMappings[c] || {}).index];
+                            if (item[c] && (c === 'start_date' || c === 'end_date')) {
+                                item[c] = new Date(item[c]);
+                            }
+                        });
+                        return item;
+                    });
+
+                    // Disable the update calls until we can nail down the filtering
+                    // We are initially loading
+                    // if (!this.columnMappings || cols.filter(n => (newMappings[n] || {}).parent === (this.columnMappings[n] || {}).parent).length !== cols.length) {
+                        // this.columnMappings = newMappings;
+                        this.teller.load(data);
+                    // } else {
+                        // this.teller.update(data);
+                    // }
                 }
 
-                const data = dv.table.rows.map(n => {
-                    const item = {};
-                    cols.forEach(c => {
-                        item[c] = n[(newMappings[c] || {}).index];
-                        if (item[c] && (c === 'start_date' || c === 'end_date')) {
-                            item[c] = new Date(item[c]);
-                        }
-                    });
-                    return item;
-                });
-
-                // We are initially loading
-                if (!this.columnMappings || cols.filter(n => (newMappings[n] || {}).parent === (this.columnMappings[n] || {}).parent).length !== cols.length) {
-                    this.columnMappings = newMappings;
-                    this.teller.load(data);
-                } else {
-                    this.teller.update(data);
+                const elesToHide = document.querySelectorAll('.introjs-hints, .timelinestoryteller-powerbi');
+                for (let i = 0; i < elesToHide.length; i++) {
+                    elesToHide[i]['style'].display = display;
                 }
             }
         }
