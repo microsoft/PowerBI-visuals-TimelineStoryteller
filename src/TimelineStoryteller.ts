@@ -118,7 +118,8 @@ export default class TimelineStoryteller implements IVisual {
                         return item;
                     });
 
-                    // Disable the update calls until we can nail down the filtering
+                    // Disable the update calls until we can nail down the filtering, it looks like when .update is called for the first time with filtered
+                    // data, it applies some transparency that it shouldn't
                     // We are initially loading
                     // if (!this.columnMappings || cols.filter(n => (newMappings[n] || {}).parent === (this.columnMappings[n] || {}).parent).length !== cols.length) {
                         // this.columnMappings = newMappings;
