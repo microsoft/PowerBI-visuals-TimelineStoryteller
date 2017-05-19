@@ -71,5 +71,9 @@
     "typescript": "^2.0.3",
     "url-loader": "^0.5.8",
     "webpack": "^1.13.2"
+  },
+  "dependencies": {
+    "debug": "^2.6.8",
+    "powerbi-visuals-utils-dataviewutils": "^1.1.1"
   }
 }

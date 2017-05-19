@@ -43,5 +43,20 @@
         ]
       }
     }
-  }]
+  }],
+  "objects": {
+    "story": {
+      "displayName": "Story",
+      "properties": {
+        "savedStory": {
+          "type": { "text": {} }
+        },
+        "autoLoad": {
+          "displayName": "Auto Load",
+          "description": "If true, then the saved story will auto load when TimelineStoryteller is loaded",
+          "type": { "bool": {} }
+        }
+      }
+    }
+  }
 }

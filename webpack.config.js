@@ -7,9 +7,7 @@ module.exports = {
     entry: ENTRY,
     devtool: 'eval',
     resolve: {
-        extensions: ['', '.webpack.js', '.web.js', '.js', '.ts', '.css']
-    },
-    resolve: {
+       extensions: ['', '.webpack.js', '.web.js', '.js', '.ts', '.css'],
        modulesDirectories: [path.join(__dirname, 'node_modules')]
     },
     module: {
@@ -28,6 +26,9 @@ module.exports = {
             }, {
                 test: /\.(png|svg)$/,
                 loader: "binary-loader"
+            }, {
+                test: /powerbi-visuals-utils.*\/lib\/index.js/,
+                loader: "script-loader"
             }
         ]
     },
