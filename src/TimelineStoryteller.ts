@@ -34,6 +34,7 @@ const log = require('debug')('TimelineStoryteller::visual');
 const TimelineStorytellerImpl = require('timeline_storyteller');
 const utils = TimelineStorytellerImpl.utils;
 const images = TimelineStorytellerImpl.images;
+const convert = require('./dataConversion');
 
 /**
  * Timeline story teller PowerBI visual class.
@@ -59,55 +60,7 @@ export default class TimelineStoryteller implements IVisual {
         this.host = options.host;
         this.teller = new TimelineStorytellerImpl(true, false, options.element);
         this.teller.setUIScale(.7);
-
-        const importStoryMenu = utils.clone(TimelineStorytellerImpl.DEFAULT_OPTIONS.import.storyMenu);
-        const menu = utils.clone(TimelineStorytellerImpl.DEFAULT_OPTIONS.menu);
-        menu.export = {
-            label: 'Save',
-            items: {
-                powerbi: {
-                    text: 'Save to PowerBI',
-                    image: images('export.png'),
-                    click: () => {
-                        log('Saving story to PowerBI');
-                        const savedStory = JSON.stringify(this.teller.saveStoryJSON());
-                        this.host.persistProperties({
-                            replace: [{
-                                objectName: 'story',
-                                selector: null,
-                                properties: {
-                                    savedStory
-                                }
-                            }]
-                        });
-                    }
-                }
-            }
-        };
-        this.teller.setOptions({
-            showAbout: false,
-            showLogo: false,
-            // showImportOptions: true,
-            showImportLoadDataOptions: false,
-            showIntro: false,
-            import: {
-                storyMenu: {
-                    items: {
-                        file: importStoryMenu.items.file,
-                        powerbi: {
-                            text: 'Load Story from PowerBI',
-                            click: () => {
-                                log('Loading story from PowerBI');
-                                if (this.settings.story && this.settings.story.savedStory) {
-                                    this.teller.loadStory(this.settings.story.savedStory);
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            menu
-        });
+        this.teller.setOptions(this.buildTimelineOptions());
     }
 
     /**
@@ -130,68 +83,30 @@ export default class TimelineStoryteller implements IVisual {
         if ((options.type & powerbi.VisualUpdateType.Data) === powerbi.VisualUpdateType.Data) {
             this.firstUpdate = false;
             this.settings = dv ? Settings.parse<Settings>(dv) : new Settings();
-            const cols = [
-                'facet',
-                'content_text',
-                'start_date',
-                'end_date',
-                'category'
-            ];
-
-            if (dv) {
-                const newMappings: any = {};
-                dv.table.columns.forEach((column, index) => {
-                    Object.keys(column.roles).sort().forEach(role => {
-                        newMappings[role] = {
-                            index,
-                            parent: column.queryName + ':' + column.groupName
-                        };
-                    });
-                });
-
-                // Make sure we have all of the oclumns, for now.
-                let display = 'none';
-                if (Object.keys(newMappings).length === cols.length) {
-                    display = null;
-
-                    // We need both dates for it to work properly
-                    if (!newMappings.start_date || !newMappings.end_date) {
-                        delete newMappings.start_date;
-                        delete newMappings.end_date;
-                    }
-
-                    const data = dv.table.rows.map(n => {
-                        const item = {};
-                        cols.forEach(c => {
-                            item[c] = n[(newMappings[c] || {}).index];
-                            if (item[c] && (c === 'start_date' || c === 'end_date')) {
-                                item[c] = new Date(item[c]);
-                            }
-                        });
-                        return item;
-                    });
-
-                    // Disable the update calls until we can nail down the filtering, it looks like when .update is called for the first time with filtered
-                    // data, it applies some transparency that it shouldn't
-                    // We are initially loading
-                    // if (!this.columnMappings || cols.filter(n => (newMappings[n] || {}).parent === (this.columnMappings[n] || {}).parent).length !== cols.length) {
-                        // this.columnMappings = newMappings;
-                        this.teller.load(data);
-                    // } else {
-                        // this.teller.update(data);
-                    // }
-                }
-
-                const elesToHide = document.querySelectorAll('.introjs-hints, .timelinestoryteller-powerbi');
-                for (let i = 0; i < elesToHide.length; i++) {
-                    elesToHide[i]['style'].display = display;
-                }
+            const data = convert(dv);
+            let display = 'none';
+            if (data) {
+                display = null;
+                // Disable the update calls until we can nail down the filtering, it looks like when .update is called for the first time with filtered
+                // data, it applies some transparency that it shouldn't
+                // We are initially loading
+                // if (!this.columnMappings || cols.filter(n => (newMappings[n] || {}).parent === (this.columnMappings[n] || {}).parent).length !== cols.length) {
+                    // this.columnMappings = newMappings;
+                    this.teller.load(data);
+                // } else {
+                    // this.teller.update(data);
+                // }
 
                 // Load the saved story if it is the initial load, and the auto load setting is on, and we actually have a saved story
                 if (isFirstUpdate && this.settings.story.autoLoad && this.settings.story.savedStory) {
                     // Give it time to load the data first
                     setTimeout(() => this.teller.loadStory(this.settings.story.savedStory), 1000);
                 }
+            }
+
+            const elesToHide = document.querySelectorAll('.introjs-hints, .timelinestoryteller-powerbi');
+            for (let i = 0; i < elesToHide.length; i++) {
+                elesToHide[i]['style'].display = display;
             }
         }
     }
@@ -209,5 +124,70 @@ export default class TimelineStoryteller implements IVisual {
         this.settings.story.savedStory = savedStory;
 
         return objs;
+    }
+
+    /**
+     * Builds the options for TimelineStoryteller
+     */
+    private buildTimelineOptions() {
+        const importStoryMenu = utils.clone(TimelineStorytellerImpl.DEFAULT_OPTIONS.import.storyMenu);
+        const menu = utils.clone(TimelineStorytellerImpl.DEFAULT_OPTIONS.menu);
+        menu.export = {
+            label: 'Save',
+            items: {
+                powerbi: {
+                    text: 'Save to PowerBI',
+                    image: images('export.png'),
+                    click: this.saveStory.bind(this)
+                }
+            }
+        };
+        this.teller.setOptions({
+            showAbout: false,
+            showLogo: false,
+            // showImportOptions: true,
+            showImportLoadDataOptions: false,
+            showIntro: false,
+            useSceneSnapshots: false,
+            import: {
+                storyMenu: {
+                    items: {
+                        file: importStoryMenu.items.file,
+                        powerbi: {
+                            text: 'Load Story from PowerBI',
+                            click: this.loadStory.bind(this)
+                        }
+                    }
+                }
+            },
+            menu
+        });
+    }
+
+    /**
+     * Loads the saved story from PowerBI
+     */
+    private loadStory() {
+        log('Loading story from PowerBI');
+        if (this.settings.story && this.settings.story.savedStory) {
+            this.teller.loadStory(this.settings.story.savedStory);
+        }
+    }
+
+    /**
+     * Saves the current story to powerbi
+     */
+    private saveStory() {
+        log('Saving story to PowerBI');
+        const savedStory = JSON.stringify(this.teller.saveStoryJSON());
+        this.host.persistProperties({
+            replace: [{
+                objectName: 'story',
+                selector: null,
+                properties: {
+                    savedStory
+                }
+            }]
+        });
     }
 }
