@@ -30,6 +30,7 @@ import VisualObjectInstanceEnumeration = powerbi.VisualObjectInstanceEnumeration
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import Settings from './settings';
 import convert from './dataConversion';
+import { clamp } from './utils';
 
 const log = require('debug')('TimelineStoryteller::visual');
 const TimelineStorytellerImpl = require('timeline_storyteller');
@@ -84,7 +85,9 @@ export default class TimelineStoryteller implements IVisual {
         const isFirstUpdate = this.firstUpdate;
         if ((options.type & powerbi.VisualUpdateType.Data) === powerbi.VisualUpdateType.Data) {
             this.firstUpdate = false;
-            this.settings = dv ? Settings.parse<Settings>(dv) : new Settings();
+
+            this.loadSettings();
+
             if (isFirstUpdate && this.settings.story.autoLoad && this.settings.story.savedStory) {
                 // Give it time to load the data first
                 setTimeout(() => this.loadStory(), 1000);
@@ -151,6 +154,24 @@ export default class TimelineStoryteller implements IVisual {
             },
             menu
         });
+    }
+
+    /**
+     * Loads settings from PowerBI
+     */
+    private loadSettings() {
+        const dv = this.dataView;
+        const oldSettings = this.settings;
+        this.settings = dv ? Settings.parse<Settings>(dv) : new Settings();
+
+        // Clamp the UI Scale
+        let newScale = this.settings.display.uiScale;
+        this.settings.display.uiScale = newScale ? clamp(newScale, 0.1, 2) : 0.7;
+
+        newScale = this.settings.display.uiScale;
+        if (oldSettings.display.uiScale !== newScale) {
+            this.teller.setUIScale(newScale);
+        }
     }
 
     /**

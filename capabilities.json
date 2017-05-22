@@ -57,6 +57,21 @@
           "type": { "bool": {} }
         }
       }
+    },
+    "display": {
+      "displayName": "Display",
+      "properties": {
+        "uiScale": {
+          "displayName": "UI Scale",
+          "description": "The scale of the UI elements",
+          "type": { "numeric": true }
+        },
+        "autoLoad": {
+          "displayName": "Auto Load",
+          "description": "If true, then the saved story will auto load when TimelineStoryteller is loaded",
+          "type": { "bool": {} }
+        }
+      }
     }
   }
 }

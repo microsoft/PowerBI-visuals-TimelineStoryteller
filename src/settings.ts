@@ -9,6 +9,11 @@ export default class TimelineStorytellerSettings extends dataview.DataViewObject
      * Represents the story related settings
      */
     public story: StorySettings = new StorySettings();
+
+    /**
+     * The settings used for display
+     */
+    public display: DisplaySettings = new DisplaySettings();
 }
 
 /**
@@ -27,3 +32,12 @@ class StorySettings {
     public autoLoad: boolean = false;
 }
 
+/**
+ * Represents the display settings
+ */
+class DisplaySettings {
+    /**
+     * The scale of the UI
+     */
+    public uiScale: number = 0.7;
+}
