@@ -29,12 +29,13 @@ import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInst
 import VisualObjectInstanceEnumeration = powerbi.VisualObjectInstanceEnumeration;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import Settings from './settings';
+import convert from './dataConversion';
 
 const log = require('debug')('TimelineStoryteller::visual');
 const TimelineStorytellerImpl = require('timeline_storyteller');
 const utils = TimelineStorytellerImpl.utils;
 const images = TimelineStorytellerImpl.images;
-const convert = require('./dataConversion');
+
 
 /**
  * Timeline story teller PowerBI visual class.
@@ -47,6 +48,7 @@ export default class TimelineStoryteller implements IVisual {
     private settings: Settings = new Settings();
     private host: IVisualHost;
     private firstUpdate = false;
+    private dataView: powerbi.DataView;
 
     /**
      * TimelineStoryteller class constructor.
@@ -78,35 +80,16 @@ export default class TimelineStoryteller implements IVisual {
      * @param {VisualUpdateOptions} options - Update options object as provided by PowerBI.
      */
     public update(options: VisualUpdateOptions): void {
-        const dv = options.dataViews && options.dataViews[0];
+        const dv = this.dataView = options.dataViews && options.dataViews[0];
         const isFirstUpdate = this.firstUpdate;
         if ((options.type & powerbi.VisualUpdateType.Data) === powerbi.VisualUpdateType.Data) {
             this.firstUpdate = false;
             this.settings = dv ? Settings.parse<Settings>(dv) : new Settings();
-            const data = convert(dv);
-            let display = 'none';
-            if (data) {
-                display = null;
-                // Disable the update calls until we can nail down the filtering, it looks like when .update is called for the first time with filtered
-                // data, it applies some transparency that it shouldn't
-                // We are initially loading
-                // if (!this.columnMappings || cols.filter(n => (newMappings[n] || {}).parent === (this.columnMappings[n] || {}).parent).length !== cols.length) {
-                    // this.columnMappings = newMappings;
-                    this.teller.load(data);
-                // } else {
-                    // this.teller.update(data);
-                // }
-
-                // Load the saved story if it is the initial load, and the auto load setting is on, and we actually have a saved story
-                if (isFirstUpdate && this.settings.story.autoLoad && this.settings.story.savedStory) {
-                    // Give it time to load the data first
-                    setTimeout(() => this.teller.loadStory(this.settings.story.savedStory), 1000);
-                }
-            }
-
-            const elesToHide = document.querySelectorAll('.introjs-hints, .timelinestoryteller-powerbi');
-            for (let i = 0; i < elesToHide.length; i++) {
-                elesToHide[i]['style'].display = display;
+            if (isFirstUpdate && this.settings.story.autoLoad && this.settings.story.savedStory) {
+                // Give it time to load the data first
+                setTimeout(() => this.loadStory(), 1000);
+            } else {
+                this.loadData();
             }
         }
     }
@@ -146,10 +129,16 @@ export default class TimelineStoryteller implements IVisual {
             showAbout: false,
             showLogo: false,
             // showImportOptions: true,
-            showImportLoadDataOptions: false,
             showIntro: false,
-            useSceneSnapshots: false,
             import: {
+                dataMenu: {
+                    items: {
+                        powerbi: {
+                            text: 'Load Data from PowerBI',
+                            click: this.loadData.bind(this)
+                        }
+                    }
+                },
                 storyMenu: {
                     items: {
                         file: importStoryMenu.items.file,
@@ -162,6 +151,34 @@ export default class TimelineStoryteller implements IVisual {
             },
             menu
         });
+    }
+
+    /**
+     * Loads data from PowerBI into TimelineStoryteller
+     */
+    private loadData() {
+        const data = convert(this.dataView);
+        let display = 'none';
+        if (data) {
+            display = null;
+            // Disable the update calls until we can nail down the filtering, it looks like when .update is called for the first time with filtered
+            // data, it applies some transparency that it shouldn't
+            // We are initially loading
+            // if (!this.columnMappings || cols.filter(n => (newMappings[n] || {}).parent === (this.columnMappings[n] || {}).parent).length !== cols.length) {
+                // this.columnMappings = newMappings;
+                // this.teller.load(data);
+            // } else {
+                // this.teller.update(data);
+            // }
+
+            // Load the saved story if it is the initial load, and the auto load setting is on, and we actually have a saved story
+            this.teller.load(data);
+        }
+
+        const elesToHide = document.querySelectorAll('.introjs-hints, .timelinestoryteller-powerbi');
+        for (let i = 0; i < elesToHide.length; i++) {
+            elesToHide[i]['style'].display = display;
+        }
     }
 
     /**

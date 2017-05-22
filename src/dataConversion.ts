@@ -12,7 +12,7 @@ export default function (dataView: powerbi.DataView) {
         'category'
     ];
 
-    if (dataView) {
+    if (dataView && dataView.table && dataView.table.columns) {
         const newMappings: any = {};
         dataView.table.columns.forEach((column, index) => {
             Object.keys(column.roles).sort().forEach(role => {
