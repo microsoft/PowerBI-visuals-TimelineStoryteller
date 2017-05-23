@@ -31,12 +31,13 @@ import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import Settings from './settings';
 import convert from './dataConversion';
 import { clamp } from './utils';
+import calcUpdateType from './lib/calcUpdateType';
+import UpdateType from './lib/UpdateType';
 
 const log = require('debug')('TimelineStoryteller::visual');
 const TimelineStorytellerImpl = require('timeline_storyteller');
 const utils = TimelineStorytellerImpl.utils;
 const images = TimelineStorytellerImpl.images;
-
 
 /**
  * Timeline story teller PowerBI visual class.
@@ -50,6 +51,7 @@ export default class TimelineStoryteller implements IVisual {
     private host: IVisualHost;
     private firstUpdate = false;
     private dataView: powerbi.DataView;
+    private options: powerbi.extensibility.visual.VisualUpdateOptions;
 
     /**
      * TimelineStoryteller class constructor.
@@ -81,12 +83,19 @@ export default class TimelineStoryteller implements IVisual {
      * @param {VisualUpdateOptions} options - Update options object as provided by PowerBI.
      */
     public update(options: VisualUpdateOptions): void {
-        const dv = this.dataView = options.dataViews && options.dataViews[0];
         const isFirstUpdate = this.firstUpdate;
-        if ((options.type & powerbi.VisualUpdateType.Data) === powerbi.VisualUpdateType.Data) {
-            this.firstUpdate = false;
+        const updateType = calcUpdateType(this.options, options);
 
+        // This needs to happen after the updateType calc
+        this.options = options;
+        const dv = this.dataView = options.dataViews && options.dataViews[0];
+
+        if ((updateType & UpdateType.Settings) === UpdateType.Settings) {
             this.loadSettings();
+        }
+
+        if ((updateType & UpdateType.Data) === UpdateType.Data) {
+            this.firstUpdate = false;
 
             if (isFirstUpdate && this.settings.story.autoLoad && this.settings.story.savedStory) {
                 // Give it time to load the data first
@@ -133,6 +142,9 @@ export default class TimelineStoryteller implements IVisual {
             showLogo: false,
             // showImportOptions: true,
             showIntro: false,
+            export: {
+                images: false
+            },
             import: {
                 dataMenu: {
                     items: {
