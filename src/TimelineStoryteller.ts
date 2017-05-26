@@ -49,7 +49,7 @@ export default class TimelineStoryteller implements IVisual {
     private element: HTMLElement;
     private settings: Settings = new Settings();
     private host: IVisualHost;
-    private firstUpdate = false;
+    private firstUpdate = true;
     private dataView: powerbi.DataView;
     private options: powerbi.extensibility.visual.VisualUpdateOptions;
 
@@ -83,25 +83,27 @@ export default class TimelineStoryteller implements IVisual {
      * @param {VisualUpdateOptions} options - Update options object as provided by PowerBI.
      */
     public update(options: VisualUpdateOptions): void {
-        const isFirstUpdate = this.firstUpdate;
-        const updateType = calcUpdateType(this.options, options);
-
-        // This needs to happen after the updateType calc
-        this.options = options;
         const dv = this.dataView = options.dataViews && options.dataViews[0];
+        if (dv && dv.categorical) {
+            const isFirstUpdate = this.firstUpdate;
+            const updateType = calcUpdateType(this.options, options);
 
-        if ((updateType & UpdateType.Settings) === UpdateType.Settings) {
-            this.loadSettings();
-        }
+            // This needs to happen after the updateType calc
+            this.options = options;
 
-        if ((updateType & UpdateType.Data) === UpdateType.Data) {
-            this.firstUpdate = false;
+            if ((updateType & UpdateType.Settings) === UpdateType.Settings) {
+                this.loadSettings();
+            }
 
-            if (isFirstUpdate && this.settings.story.autoLoad && this.settings.story.savedStory) {
-                // Give it time to load the data first
-                setTimeout(() => this.loadStory(), 1000);
-            } else {
-                this.loadData();
+            if ((updateType & UpdateType.Data) === UpdateType.Data) {
+                this.firstUpdate = false;
+
+                if (isFirstUpdate && this.settings.story.autoLoad && this.settings.story.savedStory) {
+                    // Give it time to load the data first
+                    setTimeout(() => this.loadStory(), 1000);
+                } else {
+                    this.loadData();
+                }
             }
         }
     }
