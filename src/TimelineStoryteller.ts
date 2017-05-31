@@ -98,12 +98,7 @@ export default class TimelineStoryteller implements IVisual {
             if ((updateType & UpdateType.Data) === UpdateType.Data) {
                 this.firstUpdate = false;
 
-                if (isFirstUpdate && this.settings.story.autoLoad && this.settings.story.savedStory) {
-                    // Give it time to load the data first
-                    setTimeout(() => this.loadStory(), 1000);
-                } else {
-                    this.loadData();
-                }
+                this.loadData(isFirstUpdate);
             }
         }
     }
@@ -157,13 +152,13 @@ export default class TimelineStoryteller implements IVisual {
                     }
                 },
                 storyMenu: {
-                    items: {
-                        file: importStoryMenu.items.file,
-                        powerbi: {
-                            text: 'Load Story from PowerBI',
-                            click: this.loadStory.bind(this)
-                        }
-                    }
+                //     items: {
+                //         file: importStoryMenu.items.file,
+                //         powerbi: {
+                //             text: 'Load Story from PowerBI',
+                //             click: this.loadStory.bind(this)
+                //         }
+                //     }
                 }
             },
             menu
@@ -190,8 +185,9 @@ export default class TimelineStoryteller implements IVisual {
 
     /**
      * Loads data from PowerBI into TimelineStoryteller
+     * @param isFirstUpdate If this is the load call from the fist update
      */
-    private loadData() {
+    private loadData(isFirstUpdate: boolean) {
         const data = convert(this.dataView);
         let display = 'none';
         if (data) {
@@ -206,8 +202,16 @@ export default class TimelineStoryteller implements IVisual {
                 // this.teller.update(data);
             // }
 
-            // Load the saved story if it is the initial load, and the auto load setting is on, and we actually have a saved story
-            this.teller.load(data);
+            const savedStory = this.settings.story.savedStory;
+            const timelineState = savedStory ? JSON.parse(savedStory) : {};
+            timelineState.timeline_json_data = data;
+
+            if (isFirstUpdate && this.settings.story.autoLoad) {
+                // Give it time to load the data first
+                setTimeout(() => this.teller.load(timelineState, true), 1000);
+            } else {
+                this.teller.load(timelineState);
+            }
         }
 
         const elesToHide = document.querySelectorAll('.introjs-hints, .timelinestoryteller-powerbi');
@@ -217,21 +221,11 @@ export default class TimelineStoryteller implements IVisual {
     }
 
     /**
-     * Loads the saved story from PowerBI
-     */
-    private loadStory() {
-        log('Loading story from PowerBI');
-        if (this.settings.story && this.settings.story.savedStory) {
-            this.teller.loadStory(this.settings.story.savedStory);
-        }
-    }
-
-    /**
      * Saves the current story to powerbi
      */
     private saveStory() {
         log('Saving story to PowerBI');
-        const savedStory = JSON.stringify(this.teller.saveStoryJSON());
+        const savedStory = JSON.stringify(this.teller.saveState());
         this.host.persistProperties({
             replace: [{
                 objectName: 'story',

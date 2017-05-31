@@ -27,7 +27,7 @@ module.exports = {
                 test: /\.(png|svg)$/,
                 loader: "binary-loader"
             }, {
-                test: /powerbi-visuals-utils.*\/lib\/index.js/,
+                test: require.resolve("powerbi-visuals-utils-dataviewutils"),
                 loader: "script-loader"
             }
         ]
