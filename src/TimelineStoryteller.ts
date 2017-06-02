@@ -20,6 +20,9 @@
  * SOFTWARE.
  */
 
+
+// TODO: Fix alignment of navigation frame hover popup
+
 require('intro.js/introjs.css'); // Loads the intro.js css
 
 import IVisual = powerbi.extensibility.IVisual;
@@ -66,6 +69,7 @@ export default class TimelineStoryteller implements IVisual {
         this.teller = new TimelineStorytellerImpl(true, false, options.element);
         this.teller.setUIScale(.7);
         this.teller.setOptions(this.buildTimelineOptions());
+        this.teller.on("recordScene", () => this.saveStory());
     }
 
     /**
@@ -125,12 +129,23 @@ export default class TimelineStoryteller implements IVisual {
         const importStoryMenu = utils.clone(TimelineStorytellerImpl.DEFAULT_OPTIONS.import.storyMenu);
         const menu = utils.clone(TimelineStorytellerImpl.DEFAULT_OPTIONS.menu);
         menu.export = {
-            label: 'Save',
+            // label: 'Save',
+            // items: {
+            //     powerbi: {
+            //         text: 'Save to PowerBI',
+            //         image: images('export.png'),
+            //         click: this.saveStory.bind(this)
+            //     }
+            // }
+        };
+        menu.open = {
+            label: 'Data',
             items: {
-                powerbi: {
-                    text: 'Save to PowerBI',
-                    image: images('export.png'),
-                    click: this.saveStory.bind(this)
+                open: menu.open.items[0],
+                reset: {
+                    text: 'Reset',
+                    image: images("resetBasic.png"),
+                    click: this.reset.bind(this)
                 }
             }
         };
@@ -139,26 +154,15 @@ export default class TimelineStoryteller implements IVisual {
             showLogo: false,
             // showImportOptions: true,
             showIntro: false,
+            showHints: false,
             export: {
                 images: false
             },
             import: {
-                dataMenu: {
-                    items: {
-                        powerbi: {
-                            text: 'Load Data from PowerBI',
-                            click: this.loadData.bind(this)
-                        }
-                    }
-                },
                 storyMenu: {
-                //     items: {
-                //         file: importStoryMenu.items.file,
-                //         powerbi: {
-                //             text: 'Load Story from PowerBI',
-                //             click: this.loadStory.bind(this)
-                //         }
-                //     }
+                    items: {
+                        file: importStoryMenu.items.file,
+                    }
                 }
             },
             menu
@@ -181,6 +185,23 @@ export default class TimelineStoryteller implements IVisual {
         if (oldSettings.display.uiScale !== newScale) {
             this.teller.setUIScale(newScale);
         }
+    }
+
+    /**
+     * Resets the current state of timeline storyteller
+     */
+    private reset() {
+        this.settings.story.savedStory = "";
+        this.host.persistProperties({
+            replace: [{
+                objectName: 'story',
+                selector: null,
+                properties: {
+                    savedStory: ''
+                }
+            }]
+        });
+        this.loadData(false);
     }
 
     /**
@@ -210,7 +231,7 @@ export default class TimelineStoryteller implements IVisual {
                 // Give it time to load the data first
                 setTimeout(() => this.teller.load(timelineState, true), 1000);
             } else {
-                this.teller.load(timelineState);
+                this.teller.load(timelineState, false, true);
             }
         }
 

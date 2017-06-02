@@ -40,7 +40,12 @@
           { "for": { "in": "start_date" }},
           { "for": { "in": "end_date" }},
           { "for": { "in": "category" }}
-        ]
+        ],
+        "dataReductionAlgorithm": {
+          "window": {
+            "count": 2000
+          }
+        }
       }
     }
   }],
