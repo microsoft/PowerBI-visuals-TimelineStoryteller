@@ -69,7 +69,7 @@ export default class TimelineStoryteller implements IVisual {
         this.teller = new TimelineStorytellerImpl(true, false, options.element);
         this.teller.setUIScale(.7);
         this.teller.setOptions(this.buildTimelineOptions());
-        this.teller.on("recordScene", () => this.saveStory());
+        this.teller.on("stateChanged", () => this.saveStory());
     }
 
     /**
