@@ -35,10 +35,14 @@ export default function (dataView: powerbi.DataView) {
             return dataView.table.rows.map(n => {
                 const item = {};
                 cols.forEach(c => {
-                    item[c] = n[(newMappings[c] || {}).index];
-                    if (item[c] && (c === 'start_date' || c === 'end_date')) {
-                        item[c] = new Date(item[c]);
+                    let value = n[(newMappings[c] || {}).index];
+                    if (value && (c === 'start_date' || c === 'end_date')) {
+                        if (!(value instanceof Date)) {
+                            // TimelineStoryteller likes strings
+                            value = value + "";
+                        }
                     }
+                    item[c] = value;
                 });
                 return item;
             });

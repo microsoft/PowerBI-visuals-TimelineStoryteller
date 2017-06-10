@@ -65,6 +65,7 @@ export default class TimelineStoryteller implements IVisual {
     constructor(options: VisualConstructorOptions) {
         this.element = options.element;
         this.element.className += ' timelinestoryteller-powerbi';
+        this.element.style.visibility = 'hidden';
         this.host = options.host;
         this.teller = new TimelineStorytellerImpl(true, false, options.element);
         this.teller.setUIScale(.7);
@@ -91,6 +92,13 @@ export default class TimelineStoryteller implements IVisual {
         if (dv && dv.categorical) {
             const isFirstUpdate = this.firstUpdate;
             const updateType = calcUpdateType(this.options, options);
+
+            // Let the timeline storyteller know it was resized
+            if (!this.options ||
+                this.options.viewport.width !== options.viewport.width ||
+                this.options.viewport.height !== options.viewport.height) {
+                this.teller._onResized();
+            }
 
             // This needs to happen after the updateType calc
             this.options = options;
@@ -210,7 +218,7 @@ export default class TimelineStoryteller implements IVisual {
      */
     private loadData(isFirstUpdate: boolean) {
         const data = convert(this.dataView);
-        let display = 'none';
+        let display = 'hidden';
         if (data) {
             display = null;
             // Disable the update calls until we can nail down the filtering, it looks like when .update is called for the first time with filtered
@@ -237,7 +245,7 @@ export default class TimelineStoryteller implements IVisual {
 
         const elesToHide = document.querySelectorAll('.introjs-hints, .timelinestoryteller-powerbi');
         for (let i = 0; i < elesToHide.length; i++) {
-            elesToHide[i]['style'].display = display;
+            elesToHide[i]['style'].visibility = display;
         }
     }
 
