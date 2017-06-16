@@ -220,7 +220,7 @@ export default class TimelineStoryteller implements IVisual {
         const data = convert(this.dataView);
         let display = 'hidden';
         if (data) {
-            display = null;
+            display = '';
             // Disable the update calls until we can nail down the filtering, it looks like when .update is called for the first time with filtered
             // data, it applies some transparency that it shouldn't
             // We are initially loading
