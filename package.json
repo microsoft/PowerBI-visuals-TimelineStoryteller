@@ -1,6 +1,6 @@
 {
   "name": "timelinestoryteller-powerbi",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A PowerBI wrapper around timelinestoryteller (https://timelinestoryteller.com)",
   "main": "src/index.js",
   "scripts": {
