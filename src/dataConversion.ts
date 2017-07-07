@@ -23,29 +23,20 @@ export default function (dataView: powerbi.DataView) {
             });
         });
 
-        // We need all the columns for now
-        if (Object.keys(newMappings).length === cols.length) {
-
-            // We need both dates for it to work properly
-            if (!newMappings.start_date || !newMappings.end_date) {
-                delete newMappings.start_date;
-                delete newMappings.end_date;
-            }
-
-            return dataView.table.rows.map(n => {
-                const item = {};
-                cols.forEach(c => {
-                    let value = n[(newMappings[c] || {}).index];
-                    if (value && (c === 'start_date' || c === 'end_date')) {
-                        if (!(value instanceof Date)) {
-                            // TimelineStoryteller likes strings
-                            value = value + "";
-                        }
+        // We need both dates for it to work properly
+        return dataView.table.rows.map(n => {
+            const item = {};
+            cols.forEach(c => {
+                let value = n[(newMappings[c] || {}).index];
+                if (value && (c === 'start_date' || c === 'end_date')) {
+                    if (!(value instanceof Date)) {
+                        // TimelineStoryteller likes strings
+                        value = value + "";
                     }
-                    item[c] = value;
-                });
-                return item;
+                }
+                item[c] = value;
             });
-        }
+            return item;
+        });
     }
 }
