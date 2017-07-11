@@ -71,6 +71,11 @@ export default class TimelineStoryteller implements IVisual {
         this.teller.setUIScale(.7);
         this.teller.setOptions(this.buildTimelineOptions());
         this.teller.on("stateChanged", () => this.saveStory());
+
+        const toHide = this.element.querySelectorAll(".file_selection_container .image_local_add_drop_zone, .file_selection_container h5");
+        Array.prototype.forEach.call(toHide, n => {
+            n.style.display = "none";
+        });
     }
 
     /**
@@ -136,16 +141,7 @@ export default class TimelineStoryteller implements IVisual {
     private buildTimelineOptions() {
         const importStoryMenu = utils.clone(TimelineStorytellerImpl.DEFAULT_OPTIONS.import.storyMenu);
         const menu = utils.clone(TimelineStorytellerImpl.DEFAULT_OPTIONS.menu);
-        menu.export = {
-            // label: 'Save',
-            // items: {
-            //     powerbi: {
-            //         text: 'Save to PowerBI',
-            //         image: images('export.png'),
-            //         click: this.saveStory.bind(this)
-            //     }
-            // }
-        };
+        menu.export = {};
         menu.open = {
             label: 'Data',
             items: {
