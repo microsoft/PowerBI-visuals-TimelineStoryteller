@@ -41,6 +41,8 @@ const log = require('debug')('TimelineStoryteller::visual');
 const TimelineStorytellerImpl = require('timeline_storyteller');
 const utils = TimelineStorytellerImpl.utils;
 const images = TimelineStorytellerImpl.images;
+const isSafari = !!navigator.userAgent.match(/Version\/[\d\.]+.*Safari/);
+
 
 /**
  * Timeline story teller PowerBI visual class.
@@ -72,10 +74,17 @@ export default class TimelineStoryteller implements IVisual {
         this.teller.setOptions(this.buildTimelineOptions());
         this.teller.on("stateChanged", () => this.saveStory());
 
-        const toHide = this.element.querySelectorAll(".file_selection_container .image_local_add_drop_zone, .file_selection_container h5");
+        const toHide = this.element.querySelectorAll(".file_selection_container .image_local_add_drop_zone, .file_selection_container h5" + (isSafari ? ", .offline_option_container, .options_container, .image_local_add_container " : ""));
         Array.prototype.forEach.call(toHide, n => {
             n.style.display = "none";
         });
+
+        if (isSafari) {
+            const toDisable = this.element.querySelectorAll(".resize_enabled_cb, .offline_enabled_cb");
+            Array.prototype.forEach.call(toDisable, n => {
+                n.checked = false;
+            });
+        }
     }
 
     /**
