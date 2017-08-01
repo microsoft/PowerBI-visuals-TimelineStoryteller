@@ -69,6 +69,7 @@
     },
     "dependencies": {
         "debug": "^2.6.8",
+        "ellipsize": "^0.0.3",
         "powerbi-visuals-utils-dataviewutils": "^1.1.1"
     }
 }
