@@ -1,15 +1,16 @@
 # Timeline Storyteller -- PowerBI
 
 ## Getting Started
+* Install Python 2.7
 * Install [yarn](https://yarnpkg.com)
-* Install [node 6+](https://nodejs.org/en/)
+* Install [node 6](https://nodejs.org/en/)
 * Run `yarn` to install the dependencies
 * Build `timelinestoryteller` in another directory: (https://github.com/Microsoft/timelinestoryteller#setup--testing)
 * Run `yarn link` in the timelinestoryteller directory
 * Run `yarn link timeline_storyteller` in the PowerBI-visuals-TimelineStoryteller directory
 * Run `yarn package` to package the visual.
     * The `.pbiviz` file will be generated in the `dist` folder
-
+ > You must change the `guid` property in pbiviz.json for Power BI to recognize your custom build
 
 ## Testing
 
