@@ -48,7 +48,7 @@
         "mocha": "^3.1.2",
         "moment": "2.18.1",
         "mv": "^2.1.1",
-        "node-sass": "^3.10.0",
+        "node-sass": "^4.14.1",
         "node-zip": "^1.1.1",
         "npm-run-all": "^3.1.0",
         "onchange": "^3.0.2",
@@ -70,6 +70,7 @@
     "dependencies": {
         "debug": "^2.6.8",
         "ellipsize": "^0.0.3",
-        "powerbi-visuals-utils-dataviewutils": "^1.1.1"
+        "powerbi-visuals-utils-dataviewutils": "^1.1.1",
+        "timeline_storyteller": "../timelinestoryteller/"
     }
 }

@@ -167,10 +167,8 @@ const compileScripts = (callback) => {
         if (errors.length > 0) {
             return process.exit(1);
         }
-        buildOSSReport(jsonStats.modules, ossReport => {
-            const fileContent = fs.readFileSync("/visual.js").toString();
-            callback(err, fileContent, ossReport);
-        });
+        const fileContent = fs.readFileSync("/visual.js").toString();
+        callback(err, fileContent);
     });
 };
 
@@ -212,7 +210,7 @@ const _buildPackage = (fileContent) => {
 
 const buildPackage = () => {
     mkdirp.sync(path.parse(pbivizJson.output).dir);
-    compileScripts((err, result, ossReport) => {
+    compileScripts((err, result) => {
         if (err) throw err;
 
         if (!pbivizJson.apiVersion) {
@@ -221,8 +219,8 @@ const buildPackage = () => {
             _buildPackage(result);
         }
 
-        const ossReportFile = path.join(path.dirname(pbivizJson.output), pbivizJson.visual.name + '_' + packageJson.version + '_OSS_Report.csv');
-        fs.writeFileSync(ossReportFile, ossReport);
+        // const ossReportFile = path.join(path.dirname(pbivizJson.output), pbivizJson.visual.name + '_' + packageJson.version + '_OSS_Report.csv');
+        // fs.writeFileSync(ossReportFile, ossReport);
     });
 };
 
