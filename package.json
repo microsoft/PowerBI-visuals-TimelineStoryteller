@@ -20,10 +20,12 @@
     "devDependencies": {
         "@types/jquery": "^2.0.33",
         "@types/lodash": "^4.14.37",
-        "@types/mocha": "^2.2.32",
-        "@types/requirejs": "^2.1.28",
+        "@types/mocha": "^2.2.48",
+        "@types/node": "^14.0.27",
+        "@types/requirejs": "^2.1.32",
         "@types/sinon": "^1.16.31",
-        "@types/sinon-chai": "^2.7.27",
+        "@types/sinon-chai": "^2.7.37",
+        "@types/webpack-env": "^1.15.2",
         "binary-loader": "^0.0.1",
         "chai": "^3.5.0",
         "chokidar": "^1.6.1",
@@ -48,7 +50,7 @@
         "mocha": "^3.1.2",
         "moment": "2.18.1",
         "mv": "^2.1.1",
-        "node-sass": "^3.10.0",
+        "node-sass": "^4.14.1",
         "node-zip": "^1.1.1",
         "npm-run-all": "^3.1.0",
         "onchange": "^3.0.2",
@@ -60,16 +62,18 @@
         "socket.io": "1.7.2",
         "style-loader": "^0.15.0",
         "tar.gz": "^1.0.5",
-        "ts-loader": "^0.8.2",
+        "ts-loader": "^8.0.2",
         "tslint": "^3.15.1",
         "tslint-loader": "^2.1.5",
-        "typescript": "^2.0.3",
+        "typescript": "^3.9.7",
         "url-loader": "^0.5.8",
-        "webpack": "^1.13.2"
+        "webpack": "^4.44.1"
     },
     "dependencies": {
         "debug": "^2.6.8",
         "ellipsize": "^0.0.3",
-        "powerbi-visuals-utils-dataviewutils": "^1.1.1"
+        "lodash": "^4.17.19",
+        "powerbi-visuals-utils-dataviewutils": "^1.1.1",
+        "timeline_storyteller": "../timelinestoryteller/"
     }
 }

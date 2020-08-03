@@ -7,14 +7,14 @@ module.exports = {
     entry: ENTRY,
     devtool: 'eval',
     resolve: {
-       extensions: ['', '.webpack.js', '.web.js', '.js', '.ts', '.css'],
-       modulesDirectories: [path.join(__dirname, 'node_modules')]
+       extensions: ['.webpack.js', '.web.js', '.js', '.ts', '.css'],
+       modules: [path.join(__dirname, 'node_modules')]
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.css?$/,
-                loaders: ['style-loader', 'css-loader'],
+                use: ['style-loader', 'css-loader'],
             },
             {
                 test: new RegExp(regex),
