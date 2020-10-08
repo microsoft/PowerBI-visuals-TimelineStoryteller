@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "es5",
     "sourceMap": true,
-    "types": ["mocha", "sinon-chai", "requirejs"],
+    "types": ["node", "mocha", "sinon-chai", "requirejs", "webpack-env"],
+    "typeRoots": [ "node_modules/@types" ],
     "experimentalDecorators": true
   },
   "compileOnSave": false,

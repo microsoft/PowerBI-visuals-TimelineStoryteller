@@ -18,7 +18,7 @@ module.exports = function(config) {
         },
         webpack: {
             module: {
-                loaders: [
+                rules: [
                     {
                         test: /\.ts?$/,
                         loader: 'ts-loader',
