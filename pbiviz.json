@@ -1,16 +1,17 @@
 {
   "visual": {
     "name": "TimelineStoryteller",
-    "displayName": "Timeline Storyteller",
+    "displayName": "Timeline Storyteller ver.1.0.8",
     "guid": "TimelineStoryteller1652434605730",
     "visualClassName": "TimelineStoryteller",
     "description": "Timeline Storyteller is an expressive visual storytelling environment for presenting timelines. You can use Timeline Storyteller to present different aspects of your data using a palette of timeline representations, scales, and layouts, as well as controls for filtering, highlighting, and annotation. To learn more about the research performed at Microsoft Research that informed this project, see timelinesrevisited.github.io. This is an open source project released under a MIT license at https://github.com/Microsoft/timelinestoryteller.",
     "supportUrl": "http://community.powerbi.com",
-    "gitHubUrl": "https://github.com/Microsoft/timelinestoryteller"
+    "gitHubUrl": "https://github.com/Microsoft/timelinestoryteller",
+    "version": "1.0.8"
   },
   "author": {
     "name": "Microsoft Corporation",
-    "email": "msrvizsupport@microsoft.com"
+    "email": "pbicvsupport@microsoft.com"
   },
   "apiVersion": "1.6.0",
   "assets": {
