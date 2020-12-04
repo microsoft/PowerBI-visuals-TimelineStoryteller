@@ -1,9 +1,9 @@
-import dataview from '../lib/powerbi-visuals-utils-dataviewutils';
+import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
 
 /**
  * Represents the settings for timeline story teller
  */
-export default class TimelineStorytellerSettings extends dataview.DataViewObjectsParser {
+export default class TimelineStorytellerSettings extends dataViewObjectsParser.DataViewObjectsParser {
 
     /**
      * Represents the story related settings

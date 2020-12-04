@@ -2,23 +2,23 @@
   "dataRoles": [
     {
       "name": "facet",
-      "kind": 0,
+      "kind": "Grouping",
       "displayName": "Facet"
     }, {
       "name": "content_text",
-      "kind": 0,
+      "kind": "Grouping",
       "displayName": "Content Text"
     }, {
       "name": "start_date",
-      "kind": 0,
+      "kind": "Grouping",
       "displayName": "Start Date"
     }, {
       "name": "end_date",
-      "kind": 0,
+      "kind": "Grouping",
       "displayName": "End Date"
     }, {
       "name": "category",
-      "kind": 0,
+      "kind": "Grouping",
       "displayName": "Category"
     }
   ],
@@ -54,12 +54,12 @@
       "displayName": "Story",
       "properties": {
         "savedStory": {
-          "type": { "text": {} }
+          "type": { "text": true }
         },
         "autoLoad": {
           "displayName": "Auto Load",
           "description": "If true, then the saved story will auto load when TimelineStoryteller is loaded",
-          "type": { "bool": {} }
+          "type": { "bool": true }
         }
       }
     },
@@ -74,7 +74,7 @@
         "autoLoad": {
           "displayName": "Auto Load",
           "description": "If true, then the saved story will auto load when TimelineStoryteller is loaded",
-          "type": { "bool": {} }
+          "type": { "bool": true }
         }
       }
     }

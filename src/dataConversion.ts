@@ -1,3 +1,5 @@
+import powerbi from "powerbi-visuals-api";
+
 /**
  * Converts the powerbi dataview to the data format required by TimelineStoryteller
  * @param {powerbi.DataView} dataView The dataview to convert
