@@ -1,7 +1,7 @@
 import imageUrls from "./imageUrls";
 import d3 from "d3";
 var u;
-const globals = {
+let globals = {
   reset: null,
   formatAbbreviation: null,
   formatNumber: null,
@@ -90,7 +90,13 @@ const globals = {
   source: null,
   reader: null,
   record_width: null,
-  record_height: null
+  record_height: null,
+  source_format: null,
+  time_scale: null,
+  filter_result: null,
+  leader_line_styles: null,
+  curve: null,
+  socket: null
 };
 
 // global dimensions

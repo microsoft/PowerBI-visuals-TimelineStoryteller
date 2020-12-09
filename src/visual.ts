@@ -20,9 +20,9 @@
  * SOFTWARE.
  */
 
+import 'core-js/stable/object/assign';
 
 // TODO: Fix alignment of navigation frame hover popup
-
 require("intro.js/introjs.css"); // Loads the intro.js css
 
 import powerbiVisualsApi from "powerbi-visuals-api";
