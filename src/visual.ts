@@ -25,6 +25,8 @@ import 'core-js/stable/object/assign';
 // TODO: Fix alignment of navigation frame hover popup
 require("intro.js/introjs.css"); // Loads the intro.js css
 
+import d3 from "d3";
+import ISelectionManager = powerbiVisualsApi.extensibility.ISelectionManager;
 import powerbiVisualsApi from "powerbi-visuals-api";
 import IVisual = powerbiVisualsApi.extensibility.IVisual;
 import IVisualHost = powerbiVisualsApi.extensibility.visual.IVisualHost;
@@ -57,6 +59,7 @@ export class TimelineStoryteller implements IVisual {
     private firstUpdate = true;
     private dataView: powerbiVisualsApi.DataView;
     private options: powerbiVisualsApi.extensibility.visual.VisualUpdateOptions;
+    private selectionManager: ISelectionManager;
 
     /**
      * TimelineStoryteller class constructor.
@@ -85,6 +88,8 @@ export class TimelineStoryteller implements IVisual {
                 n.checked = false;
             });
         }
+
+        this.selectionManager = this.host.createSelectionManager();
     }
 
     /**
@@ -104,6 +109,19 @@ export class TimelineStoryteller implements IVisual {
     public update(options: VisualUpdateOptions): void {
         const dv = this.dataView = options.dataViews && options.dataViews[0];
         if (dv && dv.table) {
+
+            const visualSelection = d3.select(".timeline_storyteller");
+            visualSelection.on("contextmenu", () => {
+                const mouseEvent: MouseEvent = d3.event as MouseEvent;
+                const eventTarget: EventTarget = mouseEvent.target;
+                let dataPoint = d3.select(eventTarget).datum();
+                this.selectionManager.showContextMenu(dataPoint ? dataPoint.selectionId : {}, {
+                    x: mouseEvent.clientX,
+                    y: mouseEvent.clientY
+                });
+                mouseEvent.preventDefault();
+            });
+
             const isFirstUpdate = this.firstUpdate;
             const updateType = calcUpdateType(this.options, options);
 

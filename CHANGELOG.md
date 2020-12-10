@@ -1,3 +1,7 @@
+## 2.0.2
+* Switched to API 3.4
+* Support of contextmenu
+
 ## 2.0.1
 * New library core-js to support modern JS features in IE11
 
