@@ -26,8 +26,8 @@ import 'core-js/stable/object/assign';
 require("intro.js/introjs.css"); // Loads the intro.js css
 
 import d3 from "d3";
-import ISelectionManager = powerbiVisualsApi.extensibility.ISelectionManager;
 import powerbiVisualsApi from "powerbi-visuals-api";
+import ISelectionManager = powerbiVisualsApi.extensibility.ISelectionManager;
 import IVisual = powerbiVisualsApi.extensibility.IVisual;
 import IVisualHost = powerbiVisualsApi.extensibility.visual.IVisualHost;
 import VisualConstructorOptions = powerbiVisualsApi.extensibility.visual.VisualConstructorOptions;
@@ -240,7 +240,7 @@ export class TimelineStoryteller implements IVisual {
      * @param isFirstUpdate If this is the load call from the fist update
      */
     private loadData(isFirstUpdate: boolean) {
-        const data = convert(this.dataView);
+        const data = convert(this.dataView, this.host);
         let display = 'hidden';
         if (data) {
             display = '';

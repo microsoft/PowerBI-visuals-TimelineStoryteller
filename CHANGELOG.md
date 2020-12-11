@@ -1,3 +1,6 @@
+## 2.0.3
+* Additional items for context menu
+
 ## 2.0.2
 * Switched to API 3.4
 * Support of contextmenu
