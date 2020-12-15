@@ -1,6 +1,6 @@
 {
     "name": "timelinestoryteller-powerbi",
-    "version": "2.0.3",
+    "version": "2.0.4",
     "description": "A PowerBI visual that provies similar functionality as timelinestoryteller (https://timelinestoryteller.com)",
     "scripts": {
         "pbiviz": "pbiviz",

@@ -108,7 +108,8 @@ export class TimelineStoryteller implements IVisual {
      */
     public update(options: VisualUpdateOptions): void {
         const dv = this.dataView = options.dataViews && options.dataViews[0];
-        if (dv && dv.table) {
+        
+        if (dv && dv.categorical) {
 
             const visualSelection = d3.select(".timeline_storyteller");
             visualSelection.on("contextmenu", () => {

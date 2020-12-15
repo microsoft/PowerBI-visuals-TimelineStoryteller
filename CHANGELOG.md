@@ -1,3 +1,6 @@
+## 2.0.4
+* Filter applying fix
+
 ## 2.0.3
 * Additional items for context menu
 

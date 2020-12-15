@@ -4,62 +4,138 @@
       "name": "facet",
       "kind": "Grouping",
       "displayName": "Facet"
-    }, {
+    },
+    {
       "name": "content_text",
       "kind": "Grouping",
       "displayName": "Content Text"
-    }, {
+    },
+    {
       "name": "start_date",
       "kind": "Grouping",
       "displayName": "Start Date"
-    }, {
+    },
+    {
       "name": "end_date",
       "kind": "Grouping",
       "displayName": "End Date"
-    }, {
+    },
+    {
       "name": "category",
       "kind": "Grouping",
       "displayName": "Category"
     }
   ],
-  "dataViewMappings": [{
-    "conditions": [
-      {
-        "facet": {"max": 1},
-        "content_text": {"max": 1},
-        "start_date": {"max": 1},
-        "end_date": {"max": 1},
-        "category": {"max": 1}
-      }
-    ],
-    "table": {
-      "rows": {
-        "select": [
-          { "for": { "in": "facet" }},
-          { "for": { "in": "content_text" }},
-          { "for": { "in": "start_date" }},
-          { "for": { "in": "end_date" }},
-          { "for": { "in": "category" }}
-        ],
-        "dataReductionAlgorithm": {
-          "window": {
-            "count": 2000
+  "dataViewMappings": [
+    {
+      "conditions": [
+        {
+          "facet": {
+            "max": 1
+          },
+          "content_text": {
+            "max": 1
+          },
+          "start_date": {
+            "max": 1
+          },
+          "end_date": {
+            "max": 1
+          },
+          "category": {
+            "max": 1
+          }
+        }
+      ],
+      "categorical": {
+        "categories": {
+          "select": [
+            {
+              "for": {
+                "in": "facet"
+              }
+            },
+            {
+              "for": {
+                "in": "content_text"
+              }
+            },
+            {
+              "for": {
+                "in": "start_date"
+              }
+            },
+            {
+              "for": {
+                "in": "end_date"
+              }
+            },
+            {
+              "for": {
+                "in": "category"
+              }
+            }
+          ],
+          "dataReductionAlgorithm": {
+            "top": {
+              "count": 30000
+            }
+          }
+        }
+      },
+      "table": {
+        "rows": {
+          "select": [
+            {
+              "for": {
+                "in": "facet"
+              }
+            },
+            {
+              "for": {
+                "in": "content_text"
+              }
+            },
+            {
+              "for": {
+                "in": "start_date"
+              }
+            },
+            {
+              "for": {
+                "in": "end_date"
+              }
+            },
+            {
+              "for": {
+                "in": "category"
+              }
+            }
+          ],
+          "dataReductionAlgorithm": {
+            "window": {
+              "count": 2000
+            }
           }
         }
       }
     }
-  }],
+  ],
   "objects": {
     "story": {
       "displayName": "Story",
       "properties": {
         "savedStory": {
-          "type": { "text": true }
+          "type": {
+            "text": true
+          }
         },
         "autoLoad": {
           "displayName": "Auto Load",
           "description": "If true, then the saved story will auto load when TimelineStoryteller is loaded",
-          "type": { "bool": true }
+          "type": {
+            "bool": true
+          }
         }
       }
     },
@@ -69,12 +145,16 @@
         "uiScale": {
           "displayName": "UI Scale",
           "description": "The scale of the UI elements",
-          "type": { "numeric": true }
+          "type": {
+            "numeric": true
+          }
         },
         "autoLoad": {
           "displayName": "Auto Load",
           "description": "If true, then the saved story will auto load when TimelineStoryteller is loaded",
-          "type": { "bool": true }
+          "type": {
+            "bool": true
+          }
         }
       }
     }
