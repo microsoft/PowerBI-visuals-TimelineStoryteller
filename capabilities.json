@@ -77,8 +77,8 @@
             }
           ],
           "dataReductionAlgorithm": {
-            "top": {
-              "count": 30000
+            "window": {
+              "count": 2000
             }
           }
         }

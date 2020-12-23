@@ -90,6 +90,18 @@ export class TimelineStoryteller implements IVisual {
         }
 
         this.selectionManager = this.host.createSelectionManager();
+
+        const visualSelection = d3.select(this.element);
+        visualSelection.on("contextmenu", () => {
+            const mouseEvent: MouseEvent = d3.event as MouseEvent;
+            const eventTarget: EventTarget = mouseEvent.target;
+            let dataPoint = d3.select(eventTarget).datum();
+            this.selectionManager.showContextMenu(dataPoint ? dataPoint.selectionId : {}, {
+                x: mouseEvent.clientX,
+                y: mouseEvent.clientY
+            });
+            mouseEvent.preventDefault();
+        });
     }
 
     /**
@@ -108,21 +120,8 @@ export class TimelineStoryteller implements IVisual {
      */
     public update(options: VisualUpdateOptions): void {
         const dv = this.dataView = options.dataViews && options.dataViews[0];
-        
+
         if (dv && dv.categorical) {
-
-            const visualSelection = d3.select(".timeline_storyteller");
-            visualSelection.on("contextmenu", () => {
-                const mouseEvent: MouseEvent = d3.event as MouseEvent;
-                const eventTarget: EventTarget = mouseEvent.target;
-                let dataPoint = d3.select(eventTarget).datum();
-                this.selectionManager.showContextMenu(dataPoint ? dataPoint.selectionId : {}, {
-                    x: mouseEvent.clientX,
-                    y: mouseEvent.clientY
-                });
-                mouseEvent.preventDefault();
-            });
-
             const isFirstUpdate = this.firstUpdate;
             const updateType = calcUpdateType(this.options, options);
 
@@ -142,7 +141,6 @@ export class TimelineStoryteller implements IVisual {
 
             if ((updateType & UpdateType.Data) === UpdateType.Data) {
                 this.firstUpdate = false;
-
                 this.loadData(isFirstUpdate);
             }
         }
