@@ -1,12 +1,19 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "sourceMap": true,
-    "types": ["mocha", "sinon-chai", "requirejs"],
-    "experimentalDecorators": true
-  },
-  "compileOnSave": false,
-  "exclude": [
-    "node_modules"
-  ]
+    "compilerOptions": {
+        "allowJs": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "target": "es6",
+        "sourceMap": true,
+        "outDir": "./.tmp/build/",
+        "moduleResolution": "node",
+        "declaration": true,
+        "lib": [
+            "es2015",
+            "dom"
+        ]
+    },
+    "files": [
+        "src/visual.ts"
+    ]
 }

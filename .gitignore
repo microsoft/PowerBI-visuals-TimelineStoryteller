@@ -1,5 +1,6 @@
 dist
 node_modules
+.tmp
 stats.json
 
 # Logs
@@ -8,4 +9,6 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+webpack.statistics.dev.html
+webpack.statistics.prod.html
 

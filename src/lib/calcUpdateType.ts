@@ -21,12 +21,12 @@
  * SOFTWARE.
  */
 
+import powerbi from "powerbi-visuals-api";
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import UpdateType from './UpdateType';
-const assignIn = require('lodash/assignIn'); // tslint:disable-line
-const ldIsEqual = require('lodash/isEqual');
-const ldPick = require('lodash/pick');
-const ldSome = require('lodash/some');
+import ldIsEqual from "lodash.isequal";
+import assignIn from "lodash.assignin";
+
 declare var _: any;
 
 export const DEFAULT_CALCULATE_SETTINGS: ICalcUpdateTypeOptions = {
@@ -47,13 +47,13 @@ Object.freeze(DEFAULT_CALCULATE_SETTINGS);
 export default function calcUpdateType(
     oldOpts: VisualUpdateOptions,
     newOpts: VisualUpdateOptions,
-    addlOptions?: ICalcUpdateTypeOptions|boolean) {
+    addlOptions?: ICalcUpdateTypeOptions | boolean) {
     'use strict';
     let updateType = UpdateType.Unknown;
     const options = assignIn({},
         DEFAULT_CALCULATE_SETTINGS,
         typeof addlOptions === 'boolean' ?
-            { defaultUnkownToData: addlOptions } : (addlOptions || {} ));
+            { defaultUnkownToData: addlOptions } : (addlOptions || {}));
 
     if (hasResized(oldOpts, newOpts, options)) {
         updateType ^= UpdateType.Resize;
@@ -134,16 +134,13 @@ function markDataViewState(dv: powerbi.DataView) {
     }
 }
 
-const colProps = ['queryName', 'roles', 'sort', 'aggregates'];
-
-
 function hasArrayChanged<T>(a1: T[], a2: T[], isEqual: (a: T, b: T) => boolean) {
     'use strict';
     // If the same array, shortcut (also works for undefined/null)
     if (a1 === a2) {
         return false;
 
-    // If one of them is null and the other one isn't
+        // If one of them is null and the other one isn't
     } else if (!a1 || !a2) {
         return true;
     }
@@ -160,14 +157,14 @@ function hasArrayChanged<T>(a1: T[], a2: T[], isEqual: (a: T, b: T) => boolean) 
             (!isEqual(a1[last], a2[last])) ||
 
             // Check everything
-            (ldSome(a1, ((n: any, i: number) => !isEqual(n, a2[i]))));
+            (a1.some((n: any, i: number) => !isEqual(n, a2[i])));
     }
     return false;
 }
 
 function hasCategoryChanged(dc1: powerbi.DataViewCategoryColumn, dc2: powerbi.DataViewCategoryColumn) {
     'use strict';
-    let changed = hasArrayChanged<powerbi.DataViewScopeIdentity>(dc1.identity, dc2.identity, (a, b) => a.key === b.key);
+    let changed = hasArrayChanged<any>(dc1.identity, dc2.identity, (a, b) => a.key === b.key);
     // Samesees array, they reuse the array for appending items
     if (dc1.identity && dc2.identity && dc1.identity === dc2.identity) {
         // TODO: This will not catch the case they reuse the array, ie clear the array, add new items with the same amount as the old one.
@@ -177,6 +174,11 @@ function hasCategoryChanged(dc1: powerbi.DataViewCategoryColumn, dc2: powerbi.Da
         return prevLength !== newLength;
     }
     return changed;
+}
+
+function pickProps(obj) {
+    const { queryName, roles, sort, aggregates } = obj;
+    return { queryName, roles, sort, aggregates };
 }
 
 function hasDataViewChanged(dv1: powerbi.DataView, dv2: powerbi.DataView, options: ICalcUpdateTypeOptions) {
@@ -200,7 +202,7 @@ function hasDataViewChanged(dv1: powerbi.DataView, dv2: powerbi.DataView, option
 
     for (let i = 0; i < cols1.length; i++) {
         // The underlying column has changed, or if the roles have changed
-        if (!ldIsEqual(ldPick(cols1[i], colProps), ldPick(cols2[i], colProps))) {
+        if (!ldIsEqual(pickProps(cols1[i]), pickProps(cols2[i]))) {
             return true;
         }
     }
