@@ -41,9 +41,13 @@ export default function (timeline_vis, annotationText, x_pos, y_pos, x_offset, y
           y_offset = 0;
         }
 
-        x_pos = Math.round(target.x.baseVal.value + x_offset + globals.padding.left + globals.unit_width / 2);
-        y_pos = Math.round(target.y.baseVal.value + y_offset + globals.padding.top + globals.unit_width / 2);
-      }      else {
+        try {
+          x_pos = Math.round(target.x.baseVal.value + x_offset + globals.padding.left + globals.unit_width / 2);
+          y_pos = Math.round(target.y.baseVal.value + y_offset + globals.padding.top + globals.unit_width / 2);
+        } catch (err) {
+          console.log('err', err)
+        }  
+      } else {
         target = selectWithParent("#event_g" + item_index + " path.event_span_component").node();
 
         if (target.transform.baseVal.length > 0) {
@@ -53,9 +57,13 @@ export default function (timeline_vis, annotationText, x_pos, y_pos, x_offset, y
           x_offset = 0;
           y_offset = 0;
         }
-
-        x_pos = Math.round(target.getPointAtLength(-globals.unit_width).x + x_offset + globals.padding.left);
-        y_pos = Math.round(target.getPointAtLength(-globals.unit_width).y + y_offset + globals.padding.top);
+        
+        try {
+          x_pos = Math.round(target.getPointAtLength(-globals.unit_width).x + x_offset + globals.padding.left);
+          y_pos = Math.round(target.getPointAtLength(-globals.unit_width).y + y_offset + globals.padding.top);
+        } catch (err) {
+          console.log('err', err)
+        }
       }
     }    else if (timeline_vis.tl_representation() !== "Radial") {
       target = selectWithParent("#event_g" + item_index + " rect.event_span")[0][0];
@@ -69,8 +77,12 @@ export default function (timeline_vis, annotationText, x_pos, y_pos, x_offset, y
         y_offset = 0;
       }
 
-      x_pos = Math.round(target.x.baseVal.value + x_offset + globals.padding.left + globals.unit_width / 2);
-      y_pos = Math.round(target.y.baseVal.value + y_offset + globals.padding.top + globals.unit_width / 2);
+      try {
+        x_pos = Math.round(target.x.baseVal.value + x_offset + globals.padding.left + globals.unit_width / 2);
+        y_pos = Math.round(target.y.baseVal.value + y_offset + globals.padding.top + globals.unit_width / 2);
+      } catch (err) {
+        console.log('err', err)
+      }
     }      else {
       target = selectWithParent("#event_g" + item_index + " path.event_span").node();
 
@@ -82,8 +94,12 @@ export default function (timeline_vis, annotationText, x_pos, y_pos, x_offset, y
         y_offset = 0;
       }
 
-      x_pos = Math.round((target.getPointAtLength(-globals.unit_width).x + target.getPointAtLength(globals.unit_width).x) / 2 + x_offset + globals.padding.left);
-      y_pos = Math.round((target.getPointAtLength(-globals.unit_width).y + target.getPointAtLength(globals.unit_width).y) / 2 + y_offset + globals.padding.top);
+      try {
+        x_pos = Math.round((target.getPointAtLength(-globals.unit_width).x + target.getPointAtLength(globals.unit_width).x) / 2 + x_offset + globals.padding.left);
+        y_pos = Math.round((target.getPointAtLength(-globals.unit_width).y + target.getPointAtLength(globals.unit_width).y) / 2 + y_offset + globals.padding.top);
+      } catch (err) {
+        console.log('err', err)
+      }
     }
   }
 
@@ -141,50 +157,52 @@ export default function (timeline_vis, annotationText, x_pos, y_pos, x_offset, y
       };
     })
     .on("drag", function () {
-      x_anno_offset = d3.event.x - x_pos;
-      y_anno_offset = d3.event.y - y_pos;
+      if (x_pos && y_pos) {
+        x_anno_offset = d3.event.x - x_pos;
+        y_anno_offset = d3.event.y - y_pos;
 
-      d3.select(this)
-        .attr("x", x_pos + x_anno_offset)
-        .attr("y", y_pos + y_anno_offset);
+        d3.select(this)
+          .attr("x", x_pos + x_anno_offset)
+          .attr("y", y_pos + y_anno_offset);
 
-      d3.select(this.parentNode).select(".annotation_frame")
-        .attr("x", x_pos + x_anno_offset)
-        .attr("y", y_pos + y_anno_offset);
+        d3.select(this.parentNode).select(".annotation_frame")
+          .attr("x", x_pos + x_anno_offset)
+          .attr("y", y_pos + y_anno_offset);
 
-      d3.select(this.parentNode).select(".event_label").selectAll("tspan")
-        .attr("x", x_pos + x_anno_offset + 7.5)
-        .attr("y", y_pos + y_anno_offset + annotation_buffer);
+        d3.select(this.parentNode).select(".event_label").selectAll("tspan")
+          .attr("x", x_pos + x_anno_offset + 7.5)
+          .attr("y", y_pos + y_anno_offset + annotation_buffer);
 
-      d3.select(this.parentNode).selectAll(".frame_resizer")
-        .attr("x", x_pos + x_anno_offset + label_width + 7.5)
-        .attr("y", y_pos + y_anno_offset);
+        d3.select(this.parentNode).selectAll(".frame_resizer")
+          .attr("x", x_pos + x_anno_offset + label_width + 7.5)
+          .attr("y", y_pos + y_anno_offset);
 
-      d3.select(this.parentNode).selectAll(".annotation_delete")
-        .attr("x", x_pos + x_anno_offset + label_width + 7.5 + 20)
-        .attr("y", y_pos + y_anno_offset);
+        d3.select(this.parentNode).selectAll(".annotation_delete")
+          .attr("x", x_pos + x_anno_offset + label_width + 7.5 + 20)
+          .attr("y", y_pos + y_anno_offset);
 
-      leader_line_path[2] = {
-        x: x_pos + x_anno_offset,
-        y: y_pos + y_anno_offset + 18
-      };
-      leader_line_path[1].y = leader_line_path[2].y;
-      leader_line_path[1].x = leader_line_path[0].x;
+        leader_line_path[2] = {
+          x: x_pos + x_anno_offset,
+          y: y_pos + y_anno_offset + 18
+        };
+        leader_line_path[1].y = leader_line_path[2].y;
+        leader_line_path[1].x = leader_line_path[0].x;
 
-      if (x_pos + x_anno_offset > leader_line_path[0].x) {
-        leader_line_path[2].x = x_pos + x_anno_offset;
-      }      else {
-        leader_line_path[2].x = x_pos + x_anno_offset + label_width;
+        if (x_pos + x_anno_offset > leader_line_path[0].x) {
+          leader_line_path[2].x = x_pos + x_anno_offset;
+        }      else {
+          leader_line_path[2].x = x_pos + x_anno_offset + label_width;
+        }
+
+        d3.select(this.parentNode).select(".annotation_line")
+          .data([leader_line_path])
+          .attr("d", function (d) {
+            return drawLeaderLine(d);
+          });
+
+        annotationObj.x_anno_offset = x_anno_offset;
+        annotationObj.y_anno_offset = y_anno_offset;
       }
-
-      d3.select(this.parentNode).select(".annotation_line")
-        .data([leader_line_path])
-        .attr("d", function (d) {
-          return drawLeaderLine(d);
-        });
-
-      annotationObj.x_anno_offset = x_anno_offset;
-      annotationObj.y_anno_offset = y_anno_offset;
     })
     .on("dragend", function () {
       //logEvent("event " + item_index + " annotation moved to [" + (x_pos + x_anno_offset) + "," + (y_pos + y_anno_offset) + "]");
@@ -200,173 +218,181 @@ export default function (timeline_vis, annotationText, x_pos, y_pos, x_offset, y
       };
     })
     .on("drag", function () {
-      d3.select(this).attr("x", d3.max([x_pos + x_anno_offset + label_width + 7.5, x_pos + x_anno_offset + 7.5 + (d3.event.x - (x_pos + x_anno_offset))]));
+      if (x_pos && y_pos) {
+        d3.select(this).attr("x", d3.max([x_pos + x_anno_offset + label_width + 7.5, x_pos + x_anno_offset + 7.5 + (d3.event.x - (x_pos + x_anno_offset))]));
 
-      label_width = d3.max([min_label_width, d3.event.x - (x_pos + x_anno_offset)]);
+        label_width = d3.max([min_label_width, d3.event.x - (x_pos + x_anno_offset)]);
 
-      annotationObj.label_width = label_width;
+        annotationObj.label_width = label_width;
 
-      d3.select(this.parentNode).select(".annotation_frame")
-        .attr("width", label_width + 7.5);
+        d3.select(this.parentNode).select(".annotation_frame")
+          .attr("width", label_width + 7.5);
 
-      d3.select(this.parentNode).select(".annotation_drag_area")
-        .attr("width", label_width + 7.5);
+        d3.select(this.parentNode).select(".annotation_drag_area")
+          .attr("width", label_width + 7.5);
 
-      d3.select(this.parentNode).select(".event_label")
-        .attr("x", x_pos + x_anno_offset + 7.5)
-        .attr("y", y_pos + y_anno_offset + annotation_buffer)
-        .text(annotationText)
-        .call(wrap, label_width - 7.5);
+        d3.select(this.parentNode).select(".event_label")
+          .attr("x", x_pos + x_anno_offset + 7.5)
+          .attr("y", y_pos + y_anno_offset + annotation_buffer)
+          .text(annotationText)
+          .call(wrap, label_width - 7.5);
 
-      d3.select(this.parentNode).selectAll(".frame_resizer")
-        .attr("x", x_pos + x_anno_offset + label_width + 7.5)
-        .attr("y", y_pos + y_anno_offset);
+        d3.select(this.parentNode).selectAll(".frame_resizer")
+          .attr("x", x_pos + x_anno_offset + label_width + 7.5)
+          .attr("y", y_pos + y_anno_offset);
 
-      d3.select(this.parentNode).selectAll(".annotation_delete")
-        .attr("x", x_pos + x_anno_offset + label_width + 7.5 + 20)
-        .attr("y", y_pos + y_anno_offset);
+        d3.select(this.parentNode).selectAll(".annotation_delete")
+          .attr("x", x_pos + x_anno_offset + label_width + 7.5 + 20)
+          .attr("y", y_pos + y_anno_offset);
 
-      leader_line_path[2] = {
-        x: x_pos + x_anno_offset,
-        y: y_pos + y_anno_offset + 18
-      };
-      leader_line_path[1].y = leader_line_path[2].y;
-      leader_line_path[1].x = leader_line_path[0].x;
+        leader_line_path[2] = {
+          x: x_pos + x_anno_offset,
+          y: y_pos + y_anno_offset + 18
+        };
+        leader_line_path[1].y = leader_line_path[2].y;
+        leader_line_path[1].x = leader_line_path[0].x;
 
-      if (x_pos + x_anno_offset > leader_line_path[0].x) {
-        leader_line_path[2].x = x_pos + x_anno_offset;
-      }      else {
-        leader_line_path[2].x = x_pos + x_anno_offset + label_width;
-      }
+        if (x_pos + x_anno_offset > leader_line_path[0].x) {
+          leader_line_path[2].x = x_pos + x_anno_offset;
+        }      else {
+          leader_line_path[2].x = x_pos + x_anno_offset + label_width;
+        }
 
-      d3.select(this.parentNode).select(".annotation_line")
-        .data([leader_line_path])
-        .attr("d", function (d) {
-          return drawLeaderLine(d);
-        });
+        d3.select(this.parentNode).select(".annotation_line")
+          .data([leader_line_path])
+          .attr("d", function (d) {
+            return drawLeaderLine(d);
+          });
+      }   
     })
     .on("dragend", function () {
       //logEvent("event " + item_index + " annotation resized to " + label_width + "px");
     });
 
-  leader_line_path = [
-    { x: x_pos, y: y_pos },
-    { x: x_pos, y: y_pos + y_anno_offset + 18 },
-    { x: x_pos + x_anno_offset + label_width, y: y_pos + y_anno_offset + 18 }
-  ];
+  if (x_pos && y_pos) {
+    leader_line_path = [
+      { x: x_pos, y: y_pos },
+      { x: x_pos, y: y_pos + y_anno_offset + 18 },
+      { x: x_pos + x_anno_offset + label_width, y: y_pos + y_anno_offset + 18 }
+    ];
 
-  event_annotation.append("path")
-    .attr("d", drawLeaderLine(leader_line_path))
-    .attr("class", "annotation_line");
+    event_annotation.append("path")
+      .attr("d", drawLeaderLine(leader_line_path))
+      .attr("class", "annotation_line");
 
-  var annotation_frame = event_annotation.append("rect")
-    .attr("class", "annotation_frame")
-    .attr("x", x_pos + x_anno_offset)
-    .attr("y", y_pos + y_anno_offset)
-    .attr("width", label_width + 7.5);
+    var annotation_frame = event_annotation.append("rect")
+      .attr("class", "annotation_frame")
+      .attr("x", x_pos + x_anno_offset)
+      .attr("y", y_pos + y_anno_offset)
+      .attr("width", label_width + 7.5);
 
-  event_annotation.append("svg:image")
-    .attr("class", "annotation_control frame_resizer")
-    .attr("title", "resize label")
-    .attr("x", x_pos + x_anno_offset + label_width + 7.5)
-    .attr("y", y_pos + y_anno_offset)
-    .attr("width", 20)
-    .attr("height", 20)
-    .attr("xlink:href", imageUrls("expand.png"))
-    .attr("filter", "url(#drop-shadow)")
-    .style("opacity", 0);
+    event_annotation.append("svg:image")
+      .attr("class", "annotation_control frame_resizer")
+      .attr("title", "resize label")
+      .attr("x", x_pos + x_anno_offset + label_width + 7.5)
+      .attr("y", y_pos + y_anno_offset)
+      .attr("width", 20)
+      .attr("height", 20)
+      .attr("xlink:href", imageUrls("expand.png"))
+      .attr("filter", "url(#drop-shadow)")
+      .style("opacity", 0);
 
-  var annotation_resizer = event_annotation.append("rect")
-    .attr("class", "annotation_control frame_resizer")
-    .attr("x", x_pos + x_anno_offset + label_width + 7.5)
-    .attr("y", y_pos + y_anno_offset)
-    .attr("width", 20)
-    .attr("height", 20)
-    .style("opacity", 0)
-    .on("mouseover", function () {
-      d3.select(this).style("stroke", "#f00");
-    })
-    .on("mouseout", function () {
-      d3.select(this).style("stroke", "#ccc");
-    })
-    .call(resize);
+    var annotation_resizer = event_annotation.append("rect")
+      .attr("class", "annotation_control frame_resizer")
+      .attr("x", x_pos + x_anno_offset + label_width + 7.5)
+      .attr("y", y_pos + y_anno_offset)
+      .attr("width", 20)
+      .attr("height", 20)
+      .style("opacity", 0)
+      .on("mouseover", function () {
+        d3.select(this).style("stroke", "#f00");
+      })
+      .on("mouseout", function () {
+        d3.select(this).style("stroke", "#ccc");
+      })
+      .call(resize);
 
-  annotation_resizer.append("title")
-    .text("Resize label");
+    annotation_resizer.append("title")
+      .text("Resize label");
 
-  event_annotation.append("svg:image")
-    .attr("class", "annotation_control annotation_delete")
-    .attr("id", "annotation_delete")
-    .attr("title", "remove label")
-    .attr("x", x_pos + x_anno_offset + label_width + 7.5 + 20)
-    .attr("y", y_pos + y_anno_offset)
-    .attr("width", 20)
-    .attr("height", 20)
-    .attr("xlink:href", imageUrls("delete.png"))
-    .attr("filter", "url(#drop-shadow)")
-    .style("opacity", 0);
+    event_annotation.append("svg:image")
+      .attr("class", "annotation_control annotation_delete")
+      .attr("id", "annotation_delete")
+      .attr("title", "remove label")
+      .attr("x", x_pos + x_anno_offset + label_width + 7.5 + 20)
+      .attr("y", y_pos + y_anno_offset)
+      .attr("width", 20)
+      .attr("height", 20)
+      .attr("xlink:href", imageUrls("delete.png"))
+      .attr("filter", "url(#drop-shadow)")
+      .style("opacity", 0);
 
-  event_annotation.append("rect")
-    .attr("class", "annotation_control annotation_delete")
-    .attr("x", x_pos + x_anno_offset + label_width + 7.5 + 20)
-    .attr("y", y_pos + y_anno_offset)
-    .attr("width", 20)
-    .attr("height", 20)
-    .style("opacity", 0)
-    .on("mouseover", function () {
-      d3.select(this).style("stroke", "#f00");
-    })
-    .on("mouseout", function () {
-      d3.select(this).style("stroke", "#ccc");
-    })
-    .on("click", function () {
-      var corresponding_event = selectWithParent("#event_g" + item_index);
+    event_annotation.append("rect")
+      .attr("class", "annotation_control annotation_delete")
+      .attr("x", x_pos + x_anno_offset + label_width + 7.5 + 20)
+      .attr("y", y_pos + y_anno_offset)
+      .attr("width", 20)
+      .attr("height", 20)
+      .style("opacity", 0)
+      .on("mouseover", function () {
+        d3.select(this).style("stroke", "#f00");
+      })
+      .on("mouseout", function () {
+        d3.select(this).style("stroke", "#ccc");
+      })
+      .on("click", function () {
+        var corresponding_event = selectWithParent("#event_g" + item_index);
 
-      //logEvent("event " + item_index + " annotation removed");
+        //logEvent("event " + item_index + " annotation removed");
 
-      corresponding_event[0][0].__data__.selected = false;
+        corresponding_event[0][0].__data__.selected = false;
 
-      corresponding_event.selectAll(".event_span")
-        .attr("filter", "none")
-        .style("stroke", "#333")
-        .style("stroke-width", "0.25px");
+        corresponding_event.selectAll(".event_span")
+          .attr("filter", "none")
+          .style("stroke", "#333")
+          .style("stroke-width", "0.25px");
 
-      corresponding_event.selectAll(".event_span_component")
-        .style("stroke", "#333")
-        .style("stroke-width", "0.25px");
+        corresponding_event.selectAll(".event_span_component")
+          .style("stroke", "#333")
+          .style("stroke-width", "0.25px");
 
-      d3.select(this.parentNode).remove();
-    })
-    .append("title")
-    .text("Remove label");
+        d3.select(this.parentNode).remove();
+      })
+      .append("title")
+      .text("Remove label");
 
-  event_annotation.append("circle")
-    .attr("class", "annotation_circle")
-    .attr("cx", x_pos)
-    .attr("cy", y_pos)
-    .attr("r", 2.5);
+    event_annotation.append("circle")
+      .attr("class", "annotation_circle")
+      .attr("cx", x_pos)
+      .attr("cy", y_pos)
+      .attr("r", 2.5);
 
-  var event_label_text = event_annotation.append("text")
-    .attr("class", "event_label")
-    .attr("x", x_pos + x_anno_offset + 7.5)
-    .attr("y", y_pos + y_anno_offset + annotation_buffer)
-    .attr("dy", 0)
-    .text(annotationText)
-    .call(wrap, label_width - 7.5);
+    var event_label_text = event_annotation.append("text")
+      .attr("class", "event_label")
+      .attr("x", x_pos + x_anno_offset + 7.5)
+      .attr("y", y_pos + y_anno_offset + annotation_buffer)
+      .attr("dy", 0)
+      .text(annotationText)
+      .call(wrap, label_width - 7.5);
 
-  var annotation_drag_area = event_annotation.append("rect")
-    .attr("class", "annotation_drag_area")
-    .attr("x", x_pos + x_anno_offset)
-    .attr("y", y_pos + y_anno_offset)
-    .attr("width", label_width + 7.5)
-    .on("click", function () {
+    var annotation_drag_area = event_annotation.append("rect")
+      .attr("class", "annotation_drag_area")
+      .attr("x", x_pos + x_anno_offset)
+      .attr("y", y_pos + y_anno_offset)
+      .attr("width", label_width + 7.5)
+      .on("click", function () {
 
-    })
-    .call(drag);
+      })
+      .call(drag);
 
-  event_label_text.attr("dy", 1 + "em")
-    .text(annotationText)
-    .call(wrap, label_width - 7.5);
+    event_label_text.attr("dy", 1 + "em")
+      .text(annotationText)
+      .call(wrap, label_width - 7.5);
+  };
+
+  return {
+    element: event_annotation
+  };
 
   function wrap(text, width) {
     var words = text.text().split(/\s+/).reverse(),
@@ -399,8 +425,4 @@ export default function (timeline_vis, annotationText, x_pos, y_pos, x_offset, y
       annotation_drag_area.attr("height", ((line_number + 3) * 12) + "px");
     }
   }
-
-  return {
-    element: event_annotation
-  };
 };
