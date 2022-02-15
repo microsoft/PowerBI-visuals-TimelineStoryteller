@@ -1,6 +1,6 @@
 {
     "name": "timelinestoryteller-powerbi",
-    "version": "2.0.6",
+    "version": "2.0.7",
     "description": "A PowerBI visual that provies similar functionality as timelinestoryteller (https://timelinestoryteller.com)",
     "scripts": {
         "pbiviz": "pbiviz",
@@ -24,7 +24,7 @@
         "lodash.assignin": "^4.2.0",
         "lodash.isequal": "^4.5.0",
         "moment": "^2.29.1",
-        "powerbi-visuals-api": "^3.4.0",
+        "powerbi-visuals-api": "^4.2.0",
         "powerbi-visuals-utils-dataviewutils": "^2.4.0"
     }
 }
