@@ -21,7 +21,7 @@
         "intro.js": "^3.1.0",
         "lodash.assignin": "^4.2.0",
         "lodash.isequal": "^4.5.0",
-        "moment": "^2.29.1",
+        "moment": "^2.29.2",
         "powerbi-visuals-api": "^3.4.0",
         "powerbi-visuals-utils-dataviewutils": "^2.4.0"
     }
