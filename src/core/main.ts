@@ -1124,7 +1124,7 @@ function TimelineStoryteller(isServerless, showDemo, parentElement) {
     instance.onIntro = false;
 
     // Give it some time to render the "load data" indicator
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       setTimeout(function () {
         try {
           selectWithParent("#disclaimer").style("display", "none");
@@ -2725,7 +2725,7 @@ function TimelineStoryteller(isServerless, showDemo, parentElement) {
         .attr("transform", "translate(5,0)rotate(0)");
     }
 
-    return new Promise(resolve => {
+    return new Promise<void>(resolve => {
       if (timeline_vis.renderComplete) {
         timeline_vis.renderComplete.then(resolve);
       } else {

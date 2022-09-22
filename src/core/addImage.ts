@@ -99,7 +99,7 @@ export default function (timeline_vis, image_url, x_rel_pos, y_rel_pos, image_wi
       d3.select(this.parentNode).select("clipPath").select("circle")
         .attr("cx", x_pos + image_width / 2)
         .attr("cy", y_pos + (image_height * scaling_ratio) / 2)
-        .attr("r", image_width / 2);
+        .attr("r", Math.min(image_width, image_height) / 2 * scaling_ratio);
 
       d3.select(this.parentNode).select(".image_frame")
         .attr("x", x_pos)
@@ -140,7 +140,7 @@ export default function (timeline_vis, image_url, x_rel_pos, y_rel_pos, image_wi
       d3.select(this.parentNode).select("clipPath").select("circle")
         .attr("cx", x_pos + image_width / 2)
         .attr("cy", y_pos + (image_height * scaling_ratio) / 2)
-        .attr("r", image_width / 2);
+        .attr("r", Math.min(image_width, image_height) / 2 * scaling_ratio);
 
       d3.select(this.parentNode).select(".image_frame")
         .attr("width", image_width)
@@ -171,7 +171,7 @@ export default function (timeline_vis, image_url, x_rel_pos, y_rel_pos, image_wi
     .append("circle")
     .attr("cx", x_pos + image_width / 2)
     .attr("cy", y_pos + image_height / 2)
-    .attr("r", image_width / 2);
+    .attr("r", Math.min(image_width, image_height) / 2);
 
   timeline_image.append("svg:image")
     .attr("xlink:href", image_url)
@@ -185,14 +185,14 @@ export default function (timeline_vis, image_url, x_rel_pos, y_rel_pos, image_wi
     })
     .style("clip-path", function () {
       if (timeline_vis.tl_representation() === "Radial") {
-        return "circle()";
+        return "circle";
       }
 
       return "none";
     })
     .style("-webkit-clip-path", function () {
       if (timeline_vis.tl_representation() === "Radial") {
-        return "circle()";
+        return "circle";
       }
 
       return "none";
